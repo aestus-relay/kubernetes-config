@@ -1,0 +1,29 @@
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-website
+spec:
+  type: ClusterIP
+  selector:
+      app: relay-website
+  ports:
+  - name: web-port
+    port: 9060
+    targetPort: 9060
+    protocol: TCP
+---
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-api
+spec:
+  type: ClusterIP
+  selector:
+      app: relay-api
+  ports:
+  - name: api-port
+    port: 9062
+    targetPort: 9062
+    protocol: TCP

@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-el-geth-goerli
+  labels:
+    app: relay-el-geth-goerli
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: relay-el-geth-goerli
+  template:
+    metadata:
+      labels:
+        app: relay-el-geth-goerli
+    spec:
+      containers:
+        - image: austonst/block-validation-geth@sha256:5af18338bcd7133fadbbfeba1b4ede791fe98e5b5589e9f4169a67c6b8d8d610
+          name: relay-el-geth-goerli
+          args:
+            - --goerli
+            - --datadir=/el-geth
+            - --http
+            - --port=30001
+            - --discovery.port=30002
+            - --http.api=eth,net,personal,web3,flashbots
+            - --http.addr=0.0.0.0
+            - --http.port=8547
+            - --http.vhosts=*
+            - --metrics
+            - --metrics.expensive
+            - --metrics.port=6060
+            - --metrics.addr=0.0.0.0
+            - --authrpc.jwtsecret=/secrets/jwt
+            - --authrpc.addr=0.0.0.0
+            - --authrpc.vhosts=*
+            - --maxpeers=50
+#            - --nat=extip:136.243.4.36
+          ports:
+            - containerPort: 30001
+              protocol: TCP
+              name: el-geth-tcp
+            - containerPort: 30002
+              protocol: UDP
+              name: el-geth-udp
+            - containerPort: 8547
+              protocol: TCP
+              name: el-geth-rpc
+            - containerPort: 8551
+              protocol: TCP
+              name: el-geth-engine
+          volumeMounts:
+            - mountPath: /el-geth
+              name: eth-pvc
+            - mountPath: /secrets
+              name: jwt
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 600
+      volumes:
+        - name: eth-pvc
+          persistentVolumeClaim:
+            claimName: ethereum-goerli-pvc
+        - name: jwt
+          secret:
+            secretName: eth-goerli-jwt

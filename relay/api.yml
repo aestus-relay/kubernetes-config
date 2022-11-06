@@ -1,0 +1,40 @@
+#relay-api-deployment-with-sc-pvc
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-api
+  labels:
+    app: relay-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: relay-api
+  template:
+    metadata:
+      labels:
+        app: relay-api
+    spec:
+      containers:
+        - image: austonst/mev-boost-relay@sha256:404a8d91755bdfd5b5b522841ad9c4582a80d67acd5959e99cfab4e7e10c532a
+          name: relay-api
+          args:
+            - api
+            - --network=goerli
+            - --listen-addr=:9062
+            - --beacon-uris=http://teku-internal:5052
+            - --blocksim=http://geth-internal:8547
+            - --db=postgres://postgres:postgres@relay-db-internal:5432/postgres?sslmode=disable
+            - --redis-uri=relay-redis-internal:6379
+            - --secret-key=$(SECRET_KEY)
+          ports:
+            - containerPort: 9062
+              protocol: TCP
+              name: api-port
+          env:
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: relay-key
+                key: private
+      restartPolicy: Always

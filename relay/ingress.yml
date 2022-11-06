@@ -1,0 +1,40 @@
+# ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: relay-website
+            port:
+              number: 9060
+      - path: /eth/v1/builder/
+        pathType: Prefix
+        backend:
+          service:
+            name: relay-api
+            port:
+              number: 9062
+      - path: /relay/v1/builder/
+        pathType: Prefix
+        backend:
+          service:
+            name: relay-api
+            port:
+              number: 9062
+      - path: /eth/v1/data/
+        pathType: Prefix
+        backend:
+          service:
+            name: relay-api
+            port:
+              number: 9062

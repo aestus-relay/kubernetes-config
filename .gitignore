@@ -1,0 +1,6 @@
+kubeconfig.*
+hetzner-backup
+*secret*
+*scrt*
+*token*
+test-*

@@ -1,0 +1,26 @@
+#relay-redis-deployment-with-sc-pvc
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-redis
+  labels:
+    app: relay-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: relay-redis
+  template:
+    metadata:
+      labels:
+        app: relay-redis
+    spec:
+      containers:
+        - image: redis
+          name: relay-redis
+          args:
+          ports:
+            - containerPort: 6379
+              protocol: TCP
+              name: relay-redis-d
+      restartPolicy: Always

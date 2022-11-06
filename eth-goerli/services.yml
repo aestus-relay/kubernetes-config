@@ -1,0 +1,75 @@
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: geth-external
+spec:
+  type: NodePort
+  selector:
+      app: relay-el-geth-goerli
+  ports:
+  - name: el-geth-tcp
+    nodePort: 30001
+    port: 30001
+    targetPort: 30001
+    protocol: TCP
+  - name: el-geth-udp
+    nodePort: 30002
+    port: 30002
+    targetPort: 30002
+    protocol: UDP
+---
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: geth-internal
+spec:
+  type: ClusterIP
+  selector:
+      app: relay-el-geth-goerli
+  ports:
+  - name: el-geth-engine
+    port: 8551
+    targetPort: el-geth-engine
+    protocol: TCP
+  - name: el-geth-rpc
+    port: 8547
+    targetPort: el-geth-rpc
+    protocol: TCP
+---
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: teku-external
+spec:
+  type: NodePort
+  selector:
+      app: relay-cl-teku-goerli
+  ports:
+  - name: cl-teku-tcp
+    nodePort: 30101
+    port: 30101
+    targetPort: 30101
+    protocol: TCP
+  - name: cl-teku-udp
+    nodePort: 30102
+    port: 30102
+    targetPort: 30102
+    protocol: UDP
+---
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: teku-internal
+spec:
+  type: ClusterIP
+  selector:
+      app: relay-cl-teku-goerli
+  ports:
+  - name: cl-teku-api
+    port: 5052
+    targetPort: cl-teku-api
+    protocol: TCP

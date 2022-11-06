@@ -1,0 +1,74 @@
+#el-teku-goerli
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-cl-teku-goerli
+  labels:
+    app: relay-cl-teku-goerli
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: relay-cl-teku-goerli
+  template:
+    metadata:
+      labels:
+        app: relay-cl-teku-goerli
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - image: consensys/teku:22.10.2
+          name: relay-cl-teku-goerli
+          args:
+            - --network=goerli
+            - --data-path=/cl-data
+            - --p2p-enabled=true
+            - --p2p-interface=0.0.0.0
+            - --p2p-peer-lower-bound=100
+            - --p2p-peer-upper-bound=75
+            - --rest-api-enabled=true
+            - --rest-api-port=5052
+            - --rest-api-docs-enabled=true
+            - --rest-api-interface=0.0.0.0
+            - --rest-api-host-allowlist=*
+            - --metrics-enabled=true
+            - --metrics-host-allowlist=*
+            - --metrics-port=8080
+            - --ee-endpoint=http://geth-internal:8551
+            - --ee-jwt-secret-file=/secrets/jwt
+#            - --p2p-advertised-ip=136.243.4.36
+            - --p2p-port=30101
+            - --p2p-udp-port=30102
+            - --logging=DEBUG
+            - --initial-state=https://goerli.beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
+          env:
+            - name: JAVA_OPTS
+              value: -Xmx8g
+          ports:
+            - containerPort: 30101
+              protocol: TCP
+              name: cl-teku-tcp
+            - containerPort: 30102
+              protocol: UDP
+              name: cl-teku-udp
+            - containerPort: 5052
+              protocol: TCP
+              name: cl-teku-api
+          volumeMounts:
+            - mountPath: /cl-data
+              name: cl-vol
+            - mountPath: /secrets
+              name: jwt
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 600
+      volumes:
+        - name: cl-vol
+          persistentVolumeClaim:
+            claimName: cl-goerli-pvc
+        - name: jwt
+          secret:
+            secretName: eth-goerli-jwt

@@ -1,0 +1,28 @@
+#relay-housekeeper-goerli-deployment-with-sc-pvc
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-housekeeper
+  labels:
+    app: relay-housekeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: relay-housekeeper
+  template:
+    metadata:
+      labels:
+        app: relay-housekeeper
+    spec:
+      containers:
+        - image: austonst/mev-boost-relay@sha256:404a8d91755bdfd5b5b522841ad9c4582a80d67acd5959e99cfab4e7e10c532a
+          name: relay-housekeeper
+          args:
+            - housekeeper
+            - --network=goerli
+            - --beacon-uris=http://teku-internal:5052
+            - --db=postgres://postgres:postgres@relay-db-internal:5432/postgres?sslmode=disable
+            - --redis-uri=relay-redis-internal:6379
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 600

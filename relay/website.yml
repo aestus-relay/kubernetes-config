@@ -1,0 +1,32 @@
+#relay-website-goerli-deployment-with-sc-pvc
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-website
+  labels:
+    app: relay-website
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: relay-website
+  template:
+    metadata:
+      labels:
+        app: relay-website
+    spec:
+      containers:
+        - image: austonst/mev-boost-relay@sha256:404a8d91755bdfd5b5b522841ad9c4582a80d67acd5959e99cfab4e7e10c532a
+          name: relay-website
+          args:
+            - website
+            - --network=goerli
+            - --listen-addr=:9060
+            - --db=postgres://postgres:postgres@relay-db-internal:5432/postgres?sslmode=disable
+            - --redis-uri=relay-redis-internal:6379
+            - --relay-url="http://0xab78bf8c781c58078c3beb5710c57940874dd96aef2835e7742c866b4c7c0406754376c2c8285a36c630346aa5c5f833@goerli.aestus.live"
+          ports:
+            - containerPort: 9060
+              protocol: TCP
+              name: web-port
+      restartPolicy: Always
