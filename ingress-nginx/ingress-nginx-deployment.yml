@@ -375,13 +375,21 @@ spec:
     protocol: TCP
     targetPort: https
   - name: proxy-tcp-geth #custom tcp proxy for geth
-    port: 30001
+    port: 3001
     protocol: TCP
-    targetPort: 30001
-  - name: proxy-udp-geth #custom udp proxy for geth
-    port: 30002
-    protocol: UDP
-    targetPort: 30002
+    targetPort: 3001
+  #- name: proxy-udp-geth #custom udp proxy for geth
+  #  port: 3002
+  #  protocol: UDP
+  #  targetPort: 3002
+  - name: proxy-tcp-teku #custom tcp proxy for geth
+    port: 3101
+    protocol: TCP
+    targetPort: 3101
+  #- name: proxy-udp-teku #custom udp proxy for geth
+  #  port: 3102
+  #  protocol: UDP
+  #  targetPort: 3102
   selector:
     app.kubernetes.io/component: controller
     app.kubernetes.io/instance: ingress-nginx

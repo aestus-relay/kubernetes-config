@@ -23,8 +23,8 @@ spec:
             - --goerli
             - --datadir=/el-geth
             - --http
-            - --port=30001
-            - --discovery.port=30002
+            - --port=3001
+            - --discovery.port=3002
             - --http.api=eth,net,personal,web3,flashbots
             - --http.addr=0.0.0.0
             - --http.port=8547
@@ -39,10 +39,10 @@ spec:
             - --maxpeers=50
 #            - --nat=extip:136.243.4.36
           ports:
-            - containerPort: 30001
+            - containerPort: 3001
               protocol: TCP
               name: el-geth-tcp
-            - containerPort: 30002
+            - containerPort: 3002
               protocol: UDP
               name: el-geth-udp
             - containerPort: 8547

@@ -4,4 +4,5 @@ metadata:
   name: udp-services
   namespace: ingress-nginx
 data:
-  3002: "default/geth-external:30002"
+  3002: "default/geth-external:3002"
+  3102: "default/geth-external:3102"

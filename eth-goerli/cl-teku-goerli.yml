@@ -41,18 +41,18 @@ spec:
             - --ee-endpoint=http://geth-internal:8551
             - --ee-jwt-secret-file=/secrets/jwt
 #            - --p2p-advertised-ip=136.243.4.36
-            - --p2p-port=30101
-            - --p2p-udp-port=30102
+            - --p2p-port=3101
+            - --p2p-udp-port=3102
             - --logging=DEBUG
             - --initial-state=https://goerli.beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
 #          env:
 #            - name: JAVA_OPTS
 #              value: -Xmx8g
           ports:
-            - containerPort: 30101
+            - containerPort: 3101
               protocol: TCP
               name: cl-teku-tcp
-            - containerPort: 30102
+            - containerPort: 3102
               protocol: UDP
               name: cl-teku-udp
             - containerPort: 5052

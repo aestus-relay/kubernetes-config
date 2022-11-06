@@ -4,4 +4,5 @@ metadata:
   name: tcp-services
   namespace: ingress-nginx
 data:
-  3001: "default/geth-external:30001"
+  3001: "default/geth-external:3001"
+  3101: "default/teku-external:3101"

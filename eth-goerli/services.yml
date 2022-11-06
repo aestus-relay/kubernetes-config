@@ -4,19 +4,17 @@ kind: Service
 metadata:
   name: geth-external
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
       app: relay-el-geth-goerli
   ports:
   - name: el-geth-tcp
-    nodePort: 30001
-    port: 30001
-    targetPort: 30001
+    port: 3001
+    targetPort: 3001
     protocol: TCP
   - name: el-geth-udp
-    nodePort: 30002
-    port: 30002
-    targetPort: 30002
+    port: 3002
+    targetPort: 3002
     protocol: UDP
 ---
 #service.yaml
@@ -44,19 +42,17 @@ kind: Service
 metadata:
   name: teku-external
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
       app: relay-cl-teku-goerli
   ports:
   - name: cl-teku-tcp
-    nodePort: 30101
-    port: 30101
-    targetPort: 30101
+    port: 3101
+    targetPort: 3101
     protocol: TCP
   - name: cl-teku-udp
-    nodePort: 30102
-    port: 30102
-    targetPort: 30102
+    port: 3102
+    targetPort: 3102
     protocol: UDP
 ---
 #service.yaml
