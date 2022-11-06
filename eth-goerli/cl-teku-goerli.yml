@@ -45,9 +45,9 @@ spec:
             - --p2p-udp-port=30102
             - --logging=DEBUG
             - --initial-state=https://goerli.beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
-          env:
-            - name: JAVA_OPTS
-              value: -Xmx8g
+#          env:
+#            - name: JAVA_OPTS
+#              value: -Xmx8g
           ports:
             - containerPort: 30101
               protocol: TCP
