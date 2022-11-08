@@ -43,7 +43,7 @@ spec:
 #            - --p2p-advertised-ip=136.243.4.36
             - --p2p-port=3101
             - --p2p-udp-port=3102
-            - --logging=DEBUG
+            - --logging=INFO
             - --initial-state=https://goerli.beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
 #          env:
 #            - name: JAVA_OPTS
