@@ -22,7 +22,18 @@ spec:
             - housekeeper
             - --network=goerli
             - --beacon-uris=http://teku-internal:5052
-            - --db=postgres://postgres:postgres@relay-db-internal:5432/postgres?sslmode=disable
+            - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@relay-db-internal:5432/postgres?sslmode=disable
             - --redis-uri=relay-redis-internal:6379
+          env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-auth
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-auth
+                key: password
       restartPolicy: Always
       terminationGracePeriodSeconds: 600

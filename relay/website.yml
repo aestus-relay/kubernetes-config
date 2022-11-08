@@ -22,11 +22,22 @@ spec:
             - website
             - --network=goerli
             - --listen-addr=:9060
-            - --db=postgres://postgres:postgres@relay-db-internal:5432/postgres?sslmode=disable
+            - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@relay-db-internal:5432/postgres?sslmode=disable
             - --redis-uri=relay-redis-internal:6379
             - --relay-url="http://0xab78bf8c781c58078c3beb5710c57940874dd96aef2835e7742c866b4c7c0406754376c2c8285a36c630346aa5c5f833@goerli.aestus.live"
           ports:
             - containerPort: 9060
               protocol: TCP
               name: web-port
+          env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-auth
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-auth
+                key: password
       restartPolicy: Always

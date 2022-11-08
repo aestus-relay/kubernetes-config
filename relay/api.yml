@@ -24,7 +24,7 @@ spec:
             - --listen-addr=:9062
             - --beacon-uris=http://teku-internal:5052
             - --blocksim=http://geth-internal:8547
-            - --db=postgres://postgres:postgres@relay-db-internal:5432/postgres?sslmode=disable
+            - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@relay-db-internal:5432/postgres?sslmode=disable
             - --redis-uri=relay-redis-internal:6379
             - --secret-key=$(SECRET_KEY)
           ports:
@@ -37,4 +37,14 @@ spec:
               secretKeyRef:
                 name: relay-key
                 key: private
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-auth
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-auth
+                key: password
       restartPolicy: Always
