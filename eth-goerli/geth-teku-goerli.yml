@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: geth-teku-goerli
+spec:
+  selector:
+    matchLabels:
+      app: geth-teku-goerli
+  serviceName: geth-teku-goerli
+  podManagementPolicy: "Parallel"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: geth-teku-goerli
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - image: austonst/block-validation-geth@sha256:5af18338bcd7133fadbbfeba1b4ede791fe98e5b5589e9f4169a67c6b8d8d610
+          name: geth-goerli
+          args:
+            - --goerli
+            - --datadir=/data/geth
+            - --http
+            - --port=30303
+            - --discovery.port=30303
+            - --http.api=eth,net,personal,web3,flashbots
+            - --http.addr=0.0.0.0
+            - --http.port=8545
+            - --http.vhosts=*
+            - --metrics
+            - --metrics.expensive
+            - --metrics.port=6060
+            - --metrics.addr=0.0.0.0
+            - --authrpc.jwtsecret=/secrets/jwt
+            - --authrpc.addr=0.0.0.0
+            - --authrpc.vhosts=*
+            - --maxpeers=50
+#            - --nat=extip:136.243.4.36
+          ports:
+            - containerPort: 30303
+              protocol: TCP
+              name: geth-tcp
+            - containerPort: 30303
+              protocol: UDP
+              name: geth-udp
+            - containerPort: 8545
+              protocol: TCP
+              name: geth-rpc
+          volumeMounts:
+            - mountPath: /data
+              name: eth-goerli-pvc
+            - mountPath: /secrets
+              name: jwt
+        - image: consensys/teku:22.10.2
+          name: teku-goerli
+          args:
+            - --network=goerli
+            - --data-path=/data/teku
+            - --p2p-enabled=true
+            - --p2p-interface=0.0.0.0
+            - --p2p-peer-lower-bound=100
+            - --p2p-peer-upper-bound=75
+            - --rest-api-enabled=true
+            - --rest-api-port=5051
+            - --rest-api-docs-enabled=true
+            - --rest-api-interface=0.0.0.0
+            - --rest-api-host-allowlist=*
+            - --metrics-enabled=true
+            - --metrics-host-allowlist=*
+            - --metrics-port=8080
+            - --ee-endpoint=http://localhost:8551
+            - --ee-jwt-secret-file=/secrets/jwt
+#            - --p2p-advertised-ip=136.243.4.36
+            - --p2p-port=9000
+            - --p2p-udp-port=9000
+            - --logging=INFO
+            - --initial-state=https://goerli.beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
+#          env:
+#            - name: JAVA_OPTS
+#              value: -Xmx8g
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+              name: teku-tcp
+            - containerPort: 9000
+              protocol: UDP
+              name: teku-udp
+            - containerPort: 5051
+              protocol: TCP
+              name: teku-api
+          volumeMounts:
+            - mountPath: /data
+              name: eth-goerli-pvc
+            - mountPath: /secrets
+              name: jwt
+      initContainers:
+      - name: init-datadir
+        image: busybox
+        command: ['sh', '-c', "mkdir -p /data/geth /data/teku"]
+        volumeMounts:
+        - mountPath: /data
+          name: eth-goerli-pvc
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 600
+      volumes:
+        - name: jwt
+          secret:
+            secretName: eth-goerli-jwt
+  volumeClaimTemplates:
+  - metadata:
+      name: eth-goerli-pvc
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: csi-cinder-high-speed
+      resources:
+        requests:
+          storage: 350Gi
