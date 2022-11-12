@@ -17,7 +17,7 @@ spec:
         app: relay-el-geth-goerli
     spec:
       containers:
-        - image: austonst/block-validation-geth@sha256:5af18338bcd7133fadbbfeba1b4ede791fe98e5b5589e9f4169a67c6b8d8d610
+        - image: austonst/block-validation-geth@sha256:cf92a6454e50176597a90413c169d9493345ee97585cc4f08b9d25c0ee2e6665
           name: relay-el-geth-goerli
           args:
             - --goerli
