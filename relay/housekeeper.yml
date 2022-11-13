@@ -21,7 +21,7 @@ spec:
           args:
             - housekeeper
             - --network=goerli
-            - --beacon-uris=http://teku-internal:5052
+            - --beacon-uris=http://geth-prysm-goerli-0.geth-prysm-goerli.default.svc.cluster.local:3500
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@relay-db-internal:5432/postgres?sslmode=disable
             - --redis-uri=relay-redis-internal:6379
           env:
