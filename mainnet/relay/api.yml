@@ -1,0 +1,50 @@
+#relay-api-mainnet
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-api
+  labels:
+    app: relay-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: relay-api
+  template:
+    metadata:
+      labels:
+        app: relay-api
+    spec:
+      containers:
+        - image: austonst/mev-boost-relay@sha256:65680ebc3c4592c8197e26e1c041324620ee16e3a393929c96228da8a4343a6b
+          name: relay-api
+          args:
+            - api
+            - --network=mainnet
+            - --listen-addr=:9062
+            - --beacon-uris=http://geth-prysm-goerli-0.geth-prysm-goerli.default.svc.cluster.local:3500
+            - --blocksim=http://geth-prysm-goerli-0.geth-prysm-goerli.default.svc.cluster.local:8545
+            - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@relay-db-internal:5432/postgres?sslmode=disable
+            - --redis-uri=relay-redis-internal:6379
+            - --secret-key=$(SECRET_KEY)
+          ports:
+            - containerPort: 9062
+              protocol: TCP
+              name: api-port
+          env:
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: relay-key
+                key: private
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-auth
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-auth
+                key: password
+      restartPolicy: Always
