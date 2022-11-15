@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: udp-services
+  namespace: ingress-nginx
+data:
+  30303: "default/geth-teku:30303"
+  30304: "default/geth-prysm:30304"
+  9000: "default/geth-teku:9000"
+  13000: "default/geth-prysm:13000"
