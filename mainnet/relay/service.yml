@@ -3,12 +3,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: relay-website
+  namespace: mainnet
 spec:
   type: ClusterIP
   selector:
       app: relay-website
   ports:
-  - name: web-port
+  - name: web
     port: 9060
     targetPort: 9060
     protocol: TCP
@@ -18,12 +19,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: relay-api
+  namespace: mainnet
 spec:
   type: ClusterIP
   selector:
       app: relay-api
   ports:
-  - name: api-port
+  - name: api
     port: 9062
     targetPort: 9062
     protocol: TCP
