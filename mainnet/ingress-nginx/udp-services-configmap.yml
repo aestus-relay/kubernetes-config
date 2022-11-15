@@ -4,7 +4,7 @@ metadata:
   name: udp-services
   namespace: ingress-nginx
 data:
-  30303: "default/geth-teku:30303"
-  30304: "default/geth-prysm:30304"
-  9000: "default/geth-teku:9000"
-  13000: "default/geth-prysm:13000"
+  30303: "mainnet/geth-teku:30303"
+  30304: "mainnet/geth-prysm:30304"
+  9000: "mainnet/geth-teku:9000"
+  13000: "mainnet/geth-prysm:13000"
