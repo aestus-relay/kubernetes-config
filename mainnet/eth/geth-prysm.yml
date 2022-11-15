@@ -69,6 +69,7 @@ spec:
             - --p2p-udp-port=12000
             - --grpc-gateway-host=0.0.0.0
             - --grpc-gateway-port=3500
+            - --grpc-max-msg-size=200000000
           ports:
             - containerPort: 13000
               protocol: TCP
