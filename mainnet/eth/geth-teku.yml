@@ -20,13 +20,13 @@ spec:
         runAsGroup: 0
       containers:
         - image: austonst/block-validation-geth@sha256:cf92a6454e50176597a90413c169d9493345ee97585cc4f08b9d25c0ee2e6665
-          name: geth-goerli
+          name: geth
           args:
             - --mainnet
             - --datadir=/data/geth
             - --http
-            - --port=30303
-            - --discovery.port=30303
+            - --port=30304
+            - --discovery.port=30304
             - --http.api=eth,net,personal,web3,flashbots
             - --http.addr=0.0.0.0
             - --http.port=8545
@@ -39,12 +39,11 @@ spec:
             - --authrpc.addr=0.0.0.0
             - --authrpc.vhosts=*
             - --maxpeers=50
-#            - --nat=extip:136.243.4.36
           ports:
-            - containerPort: 30303
+            - containerPort: 30304
               protocol: TCP
               name: geth-tcp
-            - containerPort: 30303
+            - containerPort: 30304
               protocol: UDP
               name: geth-udp
             - containerPort: 8545
@@ -52,10 +51,10 @@ spec:
               name: geth-rpc
           volumeMounts:
             - mountPath: /data
-              name: eth-goerli-pvc
+              name: eth-pvc
             - mountPath: /secrets
               name: jwt
-        - image: consensys/teku:develop
+        - image: consensys/teku@sha256:3943a8c7aecb5e2f5379d67d26ebe2d37728b4a159f85f3b6b428f8676fc482d
           name: teku
           args:
             - --network=mainnet

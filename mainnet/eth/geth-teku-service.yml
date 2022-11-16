@@ -11,10 +11,10 @@ spec:
     app: geth-teku
   ports:
   - name: geth-tcp
-    port: 30303
+    port: 30304
     protocol: TCP
   - name: geth-udp
-    port: 30303
+    port: 30304
     protocol: UDP
   - name: geth-rpc
     port: 8545
