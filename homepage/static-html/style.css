@@ -58,13 +58,14 @@ h1,h2,h3
 {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .contact-item
 {
-  margin-left: 5%;
-  margin-right: 5%;
-  width: 15%;
+  margin-left: 3%;
+  margin-right: 3%;
+  width: 10%;
   min-width: 32px;
 }
 
