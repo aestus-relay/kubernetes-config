@@ -54,9 +54,9 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: relay-website
+            name: homepage
             port:
-              number: 9060
+              number: 80
       - path: /eth/v1/builder/
         pathType: Prefix
         backend:
@@ -85,9 +85,9 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: relay-website
+            name: homepage
             port:
-              number: 9060
+              number: 80
       - path: /eth/v1/builder/
         pathType: Prefix
         backend:

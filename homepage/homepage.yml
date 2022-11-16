@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  namespace: mainnet
+  labels:
+   app: homepage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homepage
+  template:
+    metadata:
+      labels:
+        app: homepage
+    spec:
+      containers:
+        - image: austonst/aestus-homepage@sha256:7fc28094aefcbee28b4394d4ec4ac1684ea33b0b2cc28900eedf0149227387fc
+          name: homepage
+          ports:
+            - containerPort: 80
+              protocol: TCP
+              name: web
+      restartPolicy: Always
