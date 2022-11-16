@@ -6,5 +6,5 @@ metadata:
 data:
   30303: "geth-teku-0.geth-teku.mainnet.svc.cluster.local:30303"
   30304: "geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:30304"
-  9000: "geth-teku-0.geth-teku.mainnet.svc.cluster.local"
+  9000: "geth-teku-0.geth-teku.mainnet.svc.cluster.local:9000"
   12000: "geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:12000"
