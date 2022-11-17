@@ -1,5 +1,15 @@
 spec:
   ports:
+  - appProtocol: http
+    name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - appProtocol: https
+    name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
   - name: proxy-tcp-geth-a #custom tcp proxy for geth-A
     port: 30303
     protocol: TCP
