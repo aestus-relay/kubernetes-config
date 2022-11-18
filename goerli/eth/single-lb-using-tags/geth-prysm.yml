@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: geth-prysm
+      lbtype: external
   serviceName: geth-prysm
   podManagementPolicy: "Parallel"
   replicas: 1
@@ -14,6 +14,7 @@ spec:
     metadata:
       labels:
         app: geth-prysm
+        lbtype: external
     spec:
       securityContext:
         runAsUser: 0
@@ -26,7 +27,7 @@ spec:
             - --datadir=/data/geth
             - --http
             - --port=30303
-            - --discovery.port=30303
+            - --discovery.port=30304
             - --http.api=eth,net,personal,web3,flashbots
             - --http.addr=0.0.0.0
             - --http.port=8545
@@ -44,7 +45,7 @@ spec:
             - containerPort: 30303
               protocol: TCP
               name: geth-tcp
-            - containerPort: 30303
+            - containerPort: 30304
               protocol: UDP
               name: geth-udp
             - containerPort: 8545

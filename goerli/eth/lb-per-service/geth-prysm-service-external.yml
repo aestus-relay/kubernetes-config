@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: geth-prysm
+  namespace: goerli
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    statefulset.kubernetes.io/pod-name: geth-prysm-0
+  ports:
+  - name: geth-tcp
+    protocol: TCP
+    port: 30303
+    targetPort: 30303
+  - name: geth-udp
+    protocol: UDP
+    port: 30304
+    targetPort: 30304
+  - name: prysm-tcp
+    protocol: TCP
+    port: 13000
+    targetPort: 13000
+  - name: prysm-udp
+    protocol: UDP
+    port: 12000
+    targetPort: 12000

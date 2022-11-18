@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: geth-prysm
+  namespace: goerli
+spec:
+  selector:
+    matchLabels:
+      app: geth-prysm
+  serviceName: geth-prysm
+  podManagementPolicy: "Parallel"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: geth-prysm
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - image: austonst/block-validation-geth@sha256:cf92a6454e50176597a90413c169d9493345ee97585cc4f08b9d25c0ee2e6665
+          name: geth
+          args:
+            - --goerli
+            - --datadir=/data/geth
+            - --http
+            - --port=30303
+            - --discovery.port=30304
+            - --http.api=eth,net,personal,web3,flashbots
+            - --http.addr=0.0.0.0
+            - --http.port=8545
+            - --http.vhosts=*
+            - --metrics
+            - --metrics.expensive
+            - --metrics.port=6060
+            - --metrics.addr=0.0.0.0
+            - --authrpc.jwtsecret=/secrets/jwt
+            - --authrpc.addr=0.0.0.0
+            - --authrpc.vhosts=*
+            - --maxpeers=50
+#            - --nat=extip:136.243.4.36
+          ports:
+            - containerPort: 30303
+              protocol: TCP
+              name: geth-tcp
+            - containerPort: 30303
+              protocol: UDP
+              name: geth-udp
+            - containerPort: 8545
+              protocol: TCP
+              name: geth-rpc
+          volumeMounts:
+            - mountPath: /data
+              name: eth-goerli-pvc
+            - mountPath: /secrets
+              name: jwt
+        - image: prysmaticlabs/prysm-beacon-chain:HEAD-de73ba
+          name: prysm
+          args:
+            - --goerli
+            - --datadir=/data/prysm
+            - --execution-endpoint=http://localhost:8551
+            - --jwt-secret=/secrets/jwt
+            - --checkpoint-sync-url=https://goerli.beaconstate.ethstaker.cc
+            - --genesis-beacon-api-url=https://goerli.beaconstate.ethstaker.cc
+            - --accept-terms-of-use
+            - --p2p-tcp-port=13000
+            - --p2p-udp-port=12000
+            - --grpc-gateway-host=0.0.0.0
+            - --grpc-gateway-port=3500
+            - --grpc-max-msg-size=200000000
+          ports:
+            - containerPort: 13000
+              protocol: TCP
+              name: prysm-tcp
+            - containerPort: 12000
+              protocol: UDP
+              name: prysm-udp
+            - containerPort: 3500
+              protocol: TCP
+              name: prysm-api
+          volumeMounts:
+            - mountPath: /data
+              name: eth-goerli-pvc
+            - mountPath: /secrets
+              name: jwt
+      initContainers:
+      - name: init-datadir
+        image: busybox
+        command: ['sh', '-c', "mkdir -p /data/geth /data/prysm"]
+        volumeMounts:
+        - mountPath: /data
+          name: eth-goerli-pvc
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 600
+      volumes:
+        - name: jwt
+          secret:
+            secretName: eth-jwt
+  volumeClaimTemplates:
+  - metadata:
+      name: eth-goerli-pvc
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 350Gi
