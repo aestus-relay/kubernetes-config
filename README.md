@@ -4,14 +4,13 @@ This repository contains Kubernetes manifests for the Aestus mev-boost relay. Se
 
 ## Structure
 
-Manifests are written in YAML and roughly organized by application:
+Manifests are written in YAML and roughly organized:
 
-* dash: Kubernetes Dashboard
-* eth-goerli: Ethereum execution and consensus client pair
-* relay: Relay databases and API servers
-* registry: Docker registry
+* cert-manager: SSL certificate manager
+* goerli: Goerli testnet EL/CL clients, mev-boost relay, and ingress
+* homepage: A landing page for the relay project as a whole
+* mainnet: Ethereum mainnet EL/CL clients, mev-boost relay, and ingress
 
 # Third-Party Manifests
 
-* [Kubernetes Dashboard v2.6.1](https://github.com/kubernetes/dashboard/releases/tag/v2.6.1)
 * [NGINX Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/)
