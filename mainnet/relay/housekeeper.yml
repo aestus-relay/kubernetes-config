@@ -22,7 +22,7 @@ spec:
           args:
             - housekeeper
             - --network=mainnet
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500
+            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://geth-teku-0.geth-teku.mainnet.svc.cluster.local:5051
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)
           env:
