@@ -16,37 +16,6 @@ spec:
     - mainnet.aestus.live
     secretName: website-certs
   rules:
-  - host: mainnet.aestus.live
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: relay-website
-            port:
-              number: 9060
-      - path: /eth/v1/builder/
-        pathType: Prefix
-        backend:
-          service:
-            name: relay-api
-            port:
-              number: 9062
-      - path: /relay/v1/builder/
-        pathType: Prefix
-        backend:
-          service:
-            name: relay-api
-            port:
-              number: 9062
-      - path: /relay/v1/data/
-        pathType: Prefix
-        backend:
-          service:
-            name: relay-api
-            port:
-              number: 9062
   - host: aestus.live
     http:
       paths:
@@ -88,6 +57,37 @@ spec:
             name: homepage
             port:
               number: 80
+      - path: /eth/v1/builder/
+        pathType: Prefix
+        backend:
+          service:
+            name: relay-api
+            port:
+              number: 9062
+      - path: /relay/v1/builder/
+        pathType: Prefix
+        backend:
+          service:
+            name: relay-api
+            port:
+              number: 9062
+      - path: /relay/v1/data/
+        pathType: Prefix
+        backend:
+          service:
+            name: relay-api
+            port:
+              number: 9062
+  - host: mainnet.aestus.live
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: relay-website
+            port:
+              number: 9060
       - path: /eth/v1/builder/
         pathType: Prefix
         backend:

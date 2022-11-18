@@ -1,25 +1,26 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: geth-teku-goerli
+  name: geth-teku
+  namespace: goerli
 spec:
   selector:
     matchLabels:
-      app: geth-teku-goerli
-  serviceName: geth-teku-goerli
+      app: geth-teku
+  serviceName: geth-teku
   podManagementPolicy: "Parallel"
   replicas: 1
   template:
     metadata:
       labels:
-        app: geth-teku-goerli
+        app: geth-teku
     spec:
       securityContext:
         runAsUser: 0
         runAsGroup: 0
       containers:
         - image: austonst/block-validation-geth@sha256:cf92a6454e50176597a90413c169d9493345ee97585cc4f08b9d25c0ee2e6665
-          name: geth-goerli
+          name: geth
           args:
             - --goerli
             - --datadir=/data/geth
@@ -54,8 +55,8 @@ spec:
               name: eth-goerli-pvc
             - mountPath: /secrets
               name: jwt
-        - image: consensys/teku:22.10.2
-          name: teku-goerli
+        - image: consensys/teku@sha256:3943a8c7aecb5e2f5379d67d26ebe2d37728b4a159f85f3b6b428f8676fc482d
+          name: teku
           args:
             - --network=goerli
             - --data-path=/data/teku
@@ -108,13 +109,13 @@ spec:
       volumes:
         - name: jwt
           secret:
-            secretName: eth-goerli-jwt
+            secretName: eth-jwt
   volumeClaimTemplates:
   - metadata:
       name: eth-goerli-pvc
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClassName: csi-cinder-high-speed
+      storageClassName: do-block-storage
       resources:
         requests:
           storage: 350Gi

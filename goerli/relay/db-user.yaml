@@ -1,0 +1,11 @@
+apiVersion: databases.digitalocean.com/v1alpha1
+kind: DatabaseUser
+metadata:
+  name: relay-user
+  namespace: goerli
+spec:
+  databaseCluster:
+    apiGroup: databases.digitalocean.com
+    kind: DatabaseClusterReference
+    name: relay-db-ref
+  username: relay

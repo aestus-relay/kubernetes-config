@@ -1,26 +1,12 @@
-#relay-redis-deployment-with-sc-pvc
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: databases.digitalocean.com/v1alpha1
+kind: DatabaseCluster
 metadata:
-  name: relay-redis
-  labels:
-    app: relay-redis
+  name: redis
+  namespace: goerli
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: relay-redis
-  template:
-    metadata:
-      labels:
-        app: relay-redis
-    spec:
-      containers:
-        - image: redis
-          name: relay-redis
-          args:
-          ports:
-            - containerPort: 6379
-              protocol: TCP
-              name: relay-redis-d
-      restartPolicy: Always
+  engine: redis
+  name: redis-goerli
+  version: '7'
+  numNodes: 1
+  size: db-s-1vcpu-1gb
+  region: nyc3

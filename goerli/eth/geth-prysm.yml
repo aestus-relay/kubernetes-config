@@ -1,25 +1,26 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: geth-prysm-goerli
+  name: geth-prysm
+  namespace: goerli
 spec:
   selector:
     matchLabels:
-      app: geth-prysm-goerli
-  serviceName: geth-prysm-goerli
+      app: geth-prysm
+  serviceName: geth-prysm
   podManagementPolicy: "Parallel"
   replicas: 1
   template:
     metadata:
       labels:
-        app: geth-prysm-goerli
+        app: geth-prysm
     spec:
       securityContext:
         runAsUser: 0
         runAsGroup: 0
       containers:
         - image: austonst/block-validation-geth@sha256:cf92a6454e50176597a90413c169d9493345ee97585cc4f08b9d25c0ee2e6665
-          name: geth-goerli
+          name: geth
           args:
             - --goerli
             - --datadir=/data/geth
@@ -55,7 +56,7 @@ spec:
             - mountPath: /secrets
               name: jwt
         - image: prysmaticlabs/prysm-beacon-chain:HEAD-de73ba
-          name: prysm-goerli
+          name: prysm
           args:
             - --goerli
             - --datadir=/data/prysm
@@ -68,6 +69,7 @@ spec:
             - --p2p-udp-port=12000
             - --grpc-gateway-host=0.0.0.0
             - --grpc-gateway-port=3500
+            - --grpc-max-msg-size=200000000
           ports:
             - containerPort: 13000
               protocol: TCP
@@ -95,13 +97,13 @@ spec:
       volumes:
         - name: jwt
           secret:
-            secretName: eth-goerli-jwt
+            secretName: eth-jwt
   volumeClaimTemplates:
   - metadata:
       name: eth-goerli-pvc
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClassName: csi-cinder-high-speed
+      storageClassName: do-block-storage
       resources:
         requests:
           storage: 350Gi

@@ -1,8 +1,8 @@
-#relay-housekeeper-goerli-deployment-with-sc-pvc
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: relay-housekeeper
+  namespace: goerli
   labels:
     app: relay-housekeeper
 spec:
@@ -16,24 +16,54 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:65680ebc3c4592c8197e26e1c041324620ee16e3a393929c96228da8a4343a6b
+        - image: austonst/mev-boost-relay@sha256:b6ddee80d5e91fe5b36a5e6680e0b70d91a2e65a770c1c818250e2a4132366e2
           name: relay-housekeeper
           args:
             - housekeeper
             - --network=goerli
-            - --beacon-uris=http://geth-prysm-goerli-0.geth-prysm-goerli.default.svc.cluster.local:3500
-            - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@relay-db-internal:5432/postgres?sslmode=disable
-            - --redis-uri=relay-redis-internal:6379
+            - --beacon-uris=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:3500
+            - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
+            - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)
           env:
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: postgres-auth
+                name: relay-user-credentials
                 key: username
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: postgres-auth
+                name: relay-user-credentials
                 key: password
+          - name: POSTGRES_URI
+            valueFrom:
+              configMapKeyRef:
+                name: relay-db-ref-private-connection
+                key: host
+          - name: POSTGRES_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: relay-db-ref-private-connection
+                key: port
+          - name: REDIS_USER
+            valueFrom:
+              secretKeyRef:
+                name: redis-default-credentials
+                key: username
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: redis-default-credentials
+                key: password
+          - name: REDIS_URI
+            valueFrom:
+              configMapKeyRef:
+                name: redis-private-connection
+                key: host
+          - name: REDIS_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: redis-private-connection
+                key: port
       restartPolicy: Always
       terminationGracePeriodSeconds: 600

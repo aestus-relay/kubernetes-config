@@ -1,0 +1,7 @@
+apiVersion: databases.digitalocean.com/v1alpha1
+kind: DatabaseClusterReference
+metadata:
+  name: relay-db-ref
+  namespace: goerli
+spec:
+  uuid: 16705e82-7cce-491a-bca6-92765277d271

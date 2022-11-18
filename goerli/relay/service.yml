@@ -1,0 +1,31 @@
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-website
+  namespace: goerli
+spec:
+  type: ClusterIP
+  selector:
+      app: relay-website
+  ports:
+  - name: web
+    port: 9060
+    targetPort: 9060
+    protocol: TCP
+---
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-api
+  namespace: goerli
+spec:
+  type: ClusterIP
+  selector:
+      app: relay-api
+  ports:
+  - name: api
+    port: 9062
+    targetPort: 9062
+    protocol: TCP
