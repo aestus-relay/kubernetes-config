@@ -6,6 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
+      app: geth-teku
       lbtype: external
   serviceName: geth-teku
   podManagementPolicy: "Parallel"
@@ -14,6 +15,7 @@ spec:
     metadata:
       labels:
         app: geth-teku
+        eth: goerli
         lbtype: external
     spec:
       securityContext:
@@ -26,8 +28,8 @@ spec:
             - --goerli
             - --datadir=/data/geth
             - --http
-            - --port=30305
-            - --discovery.port=30306
+            - --port=30303
+            - --discovery.port=30303
             - --http.api=eth,net,personal,web3,flashbots
             - --http.addr=0.0.0.0
             - --http.port=8545
@@ -42,10 +44,10 @@ spec:
             - --maxpeers=50
 #            - --nat=extip:136.243.4.36
           ports:
-            - containerPort: 30305
+            - containerPort: 30303
               protocol: TCP
               name: geth-tcp
-            - containerPort: 30306
+            - containerPort: 30303
               protocol: UDP
               name: geth-udp
             - containerPort: 8545
@@ -56,6 +58,13 @@ spec:
               name: eth-goerli-pvc
             - mountPath: /secrets
               name: jwt
+          resources:
+            requests:
+              memory: "3Gi"
+              cpu: "1000m"
+            limits:
+              memory: "6Gi"
+              cpu: "2000m"
         - image: consensys/teku@sha256:3943a8c7aecb5e2f5379d67d26ebe2d37728b4a159f85f3b6b428f8676fc482d
           name: teku
           args:
@@ -77,7 +86,7 @@ spec:
             - --ee-jwt-secret-file=/secrets/jwt
 #            - --p2p-advertised-ip=136.243.4.36
             - --p2p-port=9000
-            - --p2p-udp-port=9001
+            - --p2p-udp-port=9000
             - --logging=INFO
             - --initial-state=https://goerli.beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
 #          env:
@@ -87,7 +96,7 @@ spec:
             - containerPort: 9000
               protocol: TCP
               name: teku-tcp
-            - containerPort: 9001
+            - containerPort: 9000
               protocol: UDP
               name: teku-udp
             - containerPort: 5051
@@ -98,6 +107,13 @@ spec:
               name: eth-goerli-pvc
             - mountPath: /secrets
               name: jwt
+          resources:
+            requests:
+              memory: "6Gi"
+              cpu: "1000m"
+            limits:
+              memory: "9Gi"
+              cpu: "2000m"
       initContainers:
       - name: init-datadir
         image: busybox
@@ -111,6 +127,27 @@ spec:
         - name: jwt
           secret:
             secretName: eth-jwt
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: eth
+                  operator: In
+                  values:
+                  - goerli
+              topologyKey: topology.kubernetes.io/zone
+          - weight: 50
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: eth
+                  operator: In
+                  values:
+                  - mainnet
+              topologyKey: topology.kubernetes.io/zone
   volumeClaimTemplates:
   - metadata:
       name: eth-goerli-pvc

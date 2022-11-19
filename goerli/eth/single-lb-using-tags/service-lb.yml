@@ -40,11 +40,11 @@ spec:
     port: 9001
     protocol: UDP
     targetPort: 9001
-  - name: test-gethp-rpc
-    port: 8545
-    protocol: TCP
-    targetPort: 8545
-  - name: test-getht-rpc
-    port: 8546
-    protocol: TCP
-    targetPort: 8545
+  # - name: test-gethp-rpc
+  #   port: 8545
+  #   protocol: TCP
+  #   targetPort: 8545
+  # - name: test-getht-rpc
+  #   port: 8546
+  #   protocol: TCP
+  #   targetPort: 8545

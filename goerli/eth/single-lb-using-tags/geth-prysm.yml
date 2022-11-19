@@ -6,6 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
+      app: geth-prysm
       lbtype: external
   serviceName: geth-prysm
   podManagementPolicy: "Parallel"
@@ -14,6 +15,7 @@ spec:
     metadata:
       labels:
         app: geth-prysm
+        eth: goerli
         lbtype: external
     spec:
       securityContext:
@@ -45,7 +47,7 @@ spec:
             - containerPort: 30303
               protocol: TCP
               name: geth-tcp
-            - containerPort: 30304
+            - containerPort: 30303
               protocol: UDP
               name: geth-udp
             - containerPort: 8545
@@ -56,6 +58,13 @@ spec:
               name: eth-goerli-pvc
             - mountPath: /secrets
               name: jwt
+          resources:
+            requests:
+              memory: "3Gi"
+              cpu: "1000m"
+            limits:
+              memory: "6Gi"
+              cpu: "2000m"
         - image: prysmaticlabs/prysm-beacon-chain:HEAD-de73ba
           name: prysm
           args:
@@ -86,6 +95,13 @@ spec:
               name: eth-goerli-pvc
             - mountPath: /secrets
               name: jwt
+          resources:
+            requests:
+              memory: "6Gi"
+              cpu: "1000m"
+            limits:
+              memory: "9Gi"
+              cpu: "2000m"
       initContainers:
       - name: init-datadir
         image: busybox
@@ -99,6 +115,27 @@ spec:
         - name: jwt
           secret:
             secretName: eth-jwt
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: eth
+                  operator: In
+                  values:
+                  - goerli
+              topologyKey: topology.kubernetes.io/zone
+          - weight: 50
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: eth
+                  operator: In
+                  values:
+                  - mainnet
+              topologyKey: topology.kubernetes.io/zone
   volumeClaimTemplates:
   - metadata:
       name: eth-goerli-pvc
