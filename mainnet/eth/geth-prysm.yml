@@ -14,6 +14,7 @@ spec:
     metadata:
       labels:
         app: geth-prysm
+        eth: mainnet
     spec:
       securityContext:
         runAsUser: 0
@@ -55,6 +56,13 @@ spec:
               name: eth-pvc
             - mountPath: /secrets
               name: jwt
+          resources:
+            requests:
+              memory: "7Gi"
+              cpu: "2000m"
+            limits:
+              memory: "10Gi"
+              cpu: "3000m"
         - image: prysmaticlabs/prysm-beacon-chain:HEAD-de73ba
           name: prysm
           args:
@@ -85,6 +93,13 @@ spec:
               name: eth-pvc
             - mountPath: /secrets
               name: jwt
+          resources:
+            requests:
+              memory: "7Gi"
+              cpu: "2000m"
+            limits:
+              memory: "10Gi"
+              cpu: "3000m"
       initContainers:
       - name: init-datadir
         image: busybox
@@ -98,6 +113,27 @@ spec:
         - name: jwt
           secret:
             secretName: eth-jwt
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: eth
+                  operator: In
+                  values:
+                  - mainnet
+              topologyKey: topology.kubernetes.io/zone
+          - weight: 50
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: eth
+                  operator: In
+                  values:
+                  - goerli
+              topologyKey: topology.kubernetes.io/zone
   volumeClaimTemplates:
   - metadata:
       name: eth-pvc

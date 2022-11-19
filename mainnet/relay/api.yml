@@ -78,4 +78,11 @@ spec:
               secretKeyRef:
                 name: relay-key
                 key: private
+          resources:
+            requests:
+              memory: "1000Mi"
+              cpu: "2000m"
+            limits:
+              memory: "2Gi"
+              cpu: "4000m"
       restartPolicy: Always
