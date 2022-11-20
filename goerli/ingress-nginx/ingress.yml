@@ -28,20 +28,20 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: relay-api
+            name: relay-api-proposer
             port:
               number: 9062
       - path: /relay/v1/builder/
         pathType: Prefix
         backend:
           service:
-            name: relay-api
+            name: relay-api-builder
             port:
               number: 9062
       - path: /relay/v1/data/
         pathType: Prefix
         backend:
           service:
-            name: relay-api
+            name: relay-api-data
             port:
               number: 9062

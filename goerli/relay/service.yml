@@ -18,12 +18,44 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: relay-api
+  name: relay-api-proposer
   namespace: goerli
 spec:
   type: ClusterIP
   selector:
-      app: relay-api
+      app: relay-api-proposer
+  ports:
+  - name: api
+    port: 9062
+    targetPort: 9062
+    protocol: TCP
+---
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-api-builder
+  namespace: goerli
+spec:
+  type: ClusterIP
+  selector:
+      app: relay-api-builder
+  ports:
+  - name: api
+    port: 9062
+    targetPort: 9062
+    protocol: TCP
+---
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-api-data
+  namespace: goerli
+spec:
+  type: ClusterIP
+  selector:
+      app: relay-api-data
   ports:
   - name: api
     port: 9062
