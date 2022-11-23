@@ -1,0 +1,89 @@
+#relay-api-mainnet
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: relay-api-builder
+  namespace: mainnet
+  labels:
+    app: relay-api-builder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: relay-api-builder
+  template:
+    metadata:
+      labels:
+        app: relay-api-builder
+    spec:
+      containers:
+        - image: austonst/mev-boost-relay@sha256:4f3119814d6b3a4f73cc8fd4762d1a41abb3429bb24bf44d224d06dd69e1788e
+          name: api
+          args:
+            - api
+            - --network=mainnet
+            - --listen-addr=:9062
+            - --apis=builder
+            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://geth-teku-0.geth-teku.mainnet.svc.cluster.local:5051
+            - --blocksim=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:8545
+            - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
+            - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)
+            - --secret-key=$(SECRET_KEY)
+          ports:
+            - containerPort: 9062
+              protocol: TCP
+              name: api
+          env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: relay-user-credentials
+                key: username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: relay-user-credentials
+                key: password
+          - name: POSTGRES_URI
+            valueFrom:
+              configMapKeyRef:
+                name: relay-db-ref-private-connection
+                key: host
+          - name: POSTGRES_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: relay-db-ref-private-connection
+                key: port
+          - name: REDIS_USER
+            valueFrom:
+              secretKeyRef:
+                name: redis-default-credentials
+                key: username
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: redis-default-credentials
+                key: password
+          - name: REDIS_URI
+            valueFrom:
+              configMapKeyRef:
+                name: redis-private-connection
+                key: host
+          - name: REDIS_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: redis-private-connection
+                key: port
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: relay-key
+                key: private
+          resources:
+            requests:
+              memory: "1000Mi"
+              cpu: "2000m"
+            limits:
+              memory: "2Gi"
+              cpu: "4000m"
+      restartPolicy: Always
