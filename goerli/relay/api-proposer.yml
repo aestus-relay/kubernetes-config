@@ -78,6 +78,8 @@ spec:
               secretKeyRef:
                 name: relay-key
                 key: private
+          - name: BLOCKSIM_MAX_CONCURRENT
+            value: "0"
           resources:
             requests:
               memory: "250Mi"
