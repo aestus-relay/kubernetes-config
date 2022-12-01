@@ -22,4 +22,11 @@ spec:
             - containerPort: 80
               protocol: TCP
               name: web
+          resources:
+            requests:
+              memory: "500Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
       restartPolicy: Always
