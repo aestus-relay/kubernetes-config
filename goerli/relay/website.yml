@@ -16,7 +16,7 @@ spec:
         app: relay-website
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:b6ddee80d5e91fe5b36a5e6680e0b70d91a2e65a770c1c818250e2a4132366e2
+        - image: austonst/mev-boost-relay@sha256:da6c35570fddf0959904d14137b49c70e8f6530a46f1df48fdbadb4752e864d3
           name: relay-website
           args:
             - website
@@ -25,6 +25,8 @@ spec:
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)
             - --relay-url=https://0xab78bf8c781c58078c3beb5710c57940874dd96aef2835e7742c866b4c7c0406754376c2c8285a36c630346aa5c5f833@goerli.aestus.live
+            - --link-beaconchain=https://goerli.beaconcha.in
+            - --link-etherscan=https://goerli.etherscan.io
           ports:
             - containerPort: 9060
               protocol: TCP
