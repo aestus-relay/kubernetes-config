@@ -1,0 +1,15 @@
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: block-queue
+  namespace: mainnet
+spec:
+  type: ClusterIP
+  selector:
+      app: block-queue
+  ports:
+  - name: api
+    port: 8080
+    targetPort: 8080
+    protocol: TCP

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: block-queue
+  namespace: mainnet
+  labels:
+    app: block-queue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: block-queue
+  template:
+    metadata:
+      labels:
+        app: block-queue
+    spec:
+      containers:
+      - image: flashbots/prio-load-balancer@sha256:7031a61310fb0687c072e6444776138c02126aa39fdbac932d4b96230cdd9d5b
+        name: queue
+        args:
+          - /app/prio-load-balancer
+          - --http=0.0.0.0:8080
+          - --nodes=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:8545,http://geth-teku-0.geth-teku.mainnet.svc.cluster.local:8545
+          - --redis=dev
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+            name: api
+        resources:
+          requests:
+            memory: "250Mi"
+            cpu: "500m"
+          limits:
+            memory: "500Mi"
+            cpu: "1000m"
+      restartPolicy: Always
