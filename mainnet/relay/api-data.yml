@@ -81,9 +81,9 @@ spec:
                 key: private
           resources:
             requests:
-              memory: "1000Mi"
-              cpu: "2000m"
+              memory: "250Mi"
+              cpu: "250m"
             limits:
-              memory: "2Gi"
-              cpu: "4000m"
+              memory: "500Mi"
+              cpu: "500m"
       restartPolicy: Always

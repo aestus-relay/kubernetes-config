@@ -83,8 +83,8 @@ spec:
           resources:
             requests:
               memory: "250Mi"
-              cpu: "1000m"
+              cpu: "500m"
             limits:
               memory: "500Mi"
-              cpu: "2000m"
+              cpu: "1000m"
       restartPolicy: Always
