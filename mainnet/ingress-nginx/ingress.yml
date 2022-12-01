@@ -14,6 +14,7 @@ spec:
     - aestus.live
     - www.aestus.live
     - mainnet.aestus.live
+    - relay.aestus.live
     secretName: website-certs
   rules:
   - host: aestus.live
@@ -78,6 +79,16 @@ spec:
             name: relay-api-data
             port:
               number: 9062
+  - host: relay.aestus.live
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homepage
+            port:
+              number: 80
   - host: mainnet.aestus.live
     http:
       paths:
