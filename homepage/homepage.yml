@@ -16,7 +16,7 @@ spec:
         app: homepage
     spec:
       containers:
-        - image: austonst/aestus-homepage@sha256:ee58fd2071e9b49c4b483a9e611c99d65277f31827954fc23193a55dcae89aa0
+        - image: austonst/aestus-homepage@sha256:44a62d3e98d8bb61c374aad72d5d6b84d9865fc32915b33ac5bff1001cc13b20
           name: homepage
           ports:
             - containerPort: 80
