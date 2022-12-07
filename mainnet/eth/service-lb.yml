@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-lb
+  namespace: mainnet
+spec:
+  type: LoadBalancer
+  selector:
+    lbtype: external
+  ports:
+  - name: gethp-tcp-lb
+    port: 30303
+    protocol: TCP
+    targetPort: 30303
+  - name: gethp-udp-lb
+    port: 30304
+    protocol: UDP
+    targetPort: 30304
+  - name: prysm-tcp-lb
+    port: 13000
+    protocol: TCP
+    targetPort: 13000
+  - name: prysm-udp-lb
+    port: 12000
+    protocol: UDP
+    targetPort: 12000
+  - name: getht-tcp-lb
+    port: 30305
+    protocol: TCP
+    targetPort: 30305
+  - name: getht-udp-lb
+    port: 30306
+    protocol: UDP
+    targetPort: 30306
+  - name: teku-tcp-lb
+    port: 9000
+    protocol: TCP
+    targetPort: 9000
+  - name: teku-udp-lb
+    port: 9001
+    protocol: UDP
+    targetPort: 9001
+  # - name: test-gethp-rpc
+  #   port: 8545
+  #   protocol: TCP
+  #   targetPort: 8545
+  # - name: test-getht-rpc
+  #   port: 8546
+  #   protocol: TCP
+  #   targetPort: 8545

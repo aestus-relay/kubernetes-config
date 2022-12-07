@@ -40,6 +40,13 @@ spec:
             - --authrpc.addr=0.0.0.0
             - --authrpc.vhosts=*
             - --maxpeers=50
+            - --nat=extip:$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: eth-lb-ip
+                key: ip
           ports:
             - containerPort: 30304
               protocol: TCP
@@ -85,6 +92,13 @@ spec:
             - --p2p-udp-port=9000
             - --logging=INFO
             - --initial-state=https://beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
+            - --p2p-advertised-ip=$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: eth-lb-ip
+                key: ip
           ports:
             - containerPort: 9000
               protocol: TCP
