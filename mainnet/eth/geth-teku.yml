@@ -7,6 +7,7 @@ spec:
   selector:
     matchLabels:
       app: geth-teku
+      lbtype: external
   serviceName: geth-teku
   podManagementPolicy: "Parallel"
   replicas: 1
@@ -15,6 +16,7 @@ spec:
       labels:
         app: geth-teku
         eth: mainnet
+        lbtype: external
     spec:
       securityContext:
         runAsUser: 0
@@ -26,8 +28,8 @@ spec:
             - --mainnet
             - --datadir=/data/geth
             - --http
-            - --port=30304
-            - --discovery.port=30304
+            - --port=30305
+            - --discovery.port=30306
             - --http.api=eth,net,personal,web3,flashbots
             - --http.addr=0.0.0.0
             - --http.port=8545
@@ -48,10 +50,10 @@ spec:
                 name: eth-lb-ip
                 key: ip
           ports:
-            - containerPort: 30304
+            - containerPort: 30305
               protocol: TCP
               name: geth-tcp
-            - containerPort: 30304
+            - containerPort: 30306
               protocol: UDP
               name: geth-udp
             - containerPort: 8545
@@ -89,7 +91,7 @@ spec:
             - --ee-endpoint=http://localhost:8551
             - --ee-jwt-secret-file=/secrets/jwt
             - --p2p-port=9000
-            - --p2p-udp-port=9000
+            - --p2p-udp-port=9001
             - --logging=INFO
             - --initial-state=https://beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
             - --p2p-advertised-ip=$(PUBLIC_IP)
@@ -103,7 +105,7 @@ spec:
             - containerPort: 9000
               protocol: TCP
               name: teku-tcp
-            - containerPort: 9000
+            - containerPort: 9001
               protocol: UDP
               name: teku-udp
             - containerPort: 5051

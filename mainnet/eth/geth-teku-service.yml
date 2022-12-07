@@ -6,15 +6,15 @@ metadata:
   labels:
     app: geth-teku
 spec:
-  clusterIP: None
+  #clusterIP: None
   selector:
     app: geth-teku
   ports:
   - name: geth-tcp
-    port: 30304
+    port: 30305
     protocol: TCP
   - name: geth-udp
-    port: 30304
+    port: 30306
     protocol: UDP
   - name: geth-rpc
     port: 8545
@@ -23,8 +23,9 @@ spec:
     port: 9000
     protocol: TCP
   - name: teku-udp
-    port: 9000
+    port: 9001
     protocol: UDP
   - name: teku-rpc
     port: 5051
     protocol: TCP
+

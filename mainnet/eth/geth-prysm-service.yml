@@ -6,7 +6,7 @@ metadata:
   labels:
     app: geth-prysm
 spec:
-  clusterIP: None
+  #clusterIP: None
   selector:
     app: geth-prysm
   ports:
@@ -14,7 +14,7 @@ spec:
     port: 30303
     protocol: TCP
   - name: geth-udp
-    port: 30303
+    port: 30304
     protocol: UDP
   - name: geth-rpc
     port: 8545
