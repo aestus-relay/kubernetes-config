@@ -28,8 +28,8 @@ spec:
             - --goerli
             - --datadir=/data/geth
             - --http
-            - --port=30303
-            - --discovery.port=30303
+            - --port=30305
+            - --discovery.port=30306
             - --http.api=eth,net,personal,web3,flashbots
             - --http.addr=0.0.0.0
             - --http.port=8545
@@ -42,12 +42,18 @@ spec:
             - --authrpc.addr=0.0.0.0
             - --authrpc.vhosts=*
             - --maxpeers=50
-#            - --nat=extip:136.243.4.36
+            - --nat=extip:$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: eth-lb-ip
+                key: ip
           ports:
-            - containerPort: 30303
+            - containerPort: 30305
               protocol: TCP
               name: geth-tcp
-            - containerPort: 30303
+            - containerPort: 30306
               protocol: UDP
               name: geth-udp
             - containerPort: 8545
@@ -84,19 +90,22 @@ spec:
             - --metrics-port=8080
             - --ee-endpoint=http://localhost:8551
             - --ee-jwt-secret-file=/secrets/jwt
-#            - --p2p-advertised-ip=136.243.4.36
             - --p2p-port=9000
-            - --p2p-udp-port=9000
+            - --p2p-udp-port=9001
             - --logging=INFO
             - --initial-state=https://goerli.beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
-#          env:
-#            - name: JAVA_OPTS
-#              value: -Xmx8g
+            - --p2p-advertised-ip=$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: eth-lb-ip
+                key: ip
           ports:
             - containerPort: 9000
               protocol: TCP
               name: teku-tcp
-            - containerPort: 9000
+            - containerPort: 9001
               protocol: UDP
               name: teku-udp
             - containerPort: 5051

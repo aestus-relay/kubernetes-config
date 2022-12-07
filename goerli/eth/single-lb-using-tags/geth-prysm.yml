@@ -42,12 +42,18 @@ spec:
             - --authrpc.addr=0.0.0.0
             - --authrpc.vhosts=*
             - --maxpeers=50
-#            - --nat=extip:136.243.4.36
+            - --nat=extip:$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: eth-lb-ip
+                key: ip
           ports:
             - containerPort: 30303
               protocol: TCP
               name: geth-tcp
-            - containerPort: 30303
+            - containerPort: 30304
               protocol: UDP
               name: geth-udp
             - containerPort: 8545
@@ -80,6 +86,13 @@ spec:
             - --grpc-gateway-host=0.0.0.0
             - --grpc-gateway-port=3500
             - --grpc-max-msg-size=200000000
+            - --p2p-host-ip=$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: eth-lb-ip
+                key: ip
           ports:
             - containerPort: 13000
               protocol: TCP
