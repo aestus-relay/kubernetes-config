@@ -17,7 +17,7 @@ spec:
     port: 30306
     protocol: UDP
   - name: geth-rpc
-    port: 8545
+    port: 8546
     protocol: TCP
   - name: teku-tcp
     port: 9000

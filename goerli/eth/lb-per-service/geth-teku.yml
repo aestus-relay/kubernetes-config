@@ -7,6 +7,7 @@ spec:
   selector:
     matchLabels:
       app: geth-teku
+      lbtype: external
   serviceName: geth-teku
   podManagementPolicy: "Parallel"
   replicas: 1
@@ -15,6 +16,7 @@ spec:
       labels:
         app: geth-teku
         eth: goerli
+        lbtype: external
     spec:
       securityContext:
         runAsUser: 0
@@ -27,7 +29,7 @@ spec:
             - --datadir=/data/geth
             - --http
             - --port=30303
-            - --discovery.port=30303
+            - --discovery.port=30304
             - --http.api=eth,net,personal,web3,flashbots
             - --http.addr=0.0.0.0
             - --http.port=8545
@@ -39,13 +41,19 @@ spec:
             - --authrpc.jwtsecret=/secrets/jwt
             - --authrpc.addr=0.0.0.0
             - --authrpc.vhosts=*
-            - --maxpeers=50
-#            - --nat=extip:136.243.4.36
+            - --maxpeers=100
+            - --nat=extip:$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: geth-teku-0-lb-ip
+                key: ip
           ports:
             - containerPort: 30303
               protocol: TCP
               name: geth-tcp
-            - containerPort: 30303
+            - containerPort: 30304
               protocol: UDP
               name: geth-udp
             - containerPort: 8545
@@ -70,8 +78,8 @@ spec:
             - --data-path=/data/teku
             - --p2p-enabled=true
             - --p2p-interface=0.0.0.0
-            - --p2p-peer-lower-bound=100
-            - --p2p-peer-upper-bound=75
+            - --p2p-peer-lower-bound=75
+            - --p2p-peer-upper-bound=100
             - --rest-api-enabled=true
             - --rest-api-port=5051
             - --rest-api-docs-enabled=true
@@ -82,19 +90,23 @@ spec:
             - --metrics-port=8080
             - --ee-endpoint=http://localhost:8551
             - --ee-jwt-secret-file=/secrets/jwt
-#            - --p2p-advertised-ip=136.243.4.36
             - --p2p-port=9000
-            - --p2p-udp-port=9000
-            - --logging=INFO
+            - --p2p-advertised-port=9000
+            - --p2p-udp-port=9001
+            - --p2p-advertised-udp-port=9001
             - --initial-state=https://goerli.beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
-#          env:
-#            - name: JAVA_OPTS
-#              value: -Xmx8g
+            - --p2p-advertised-ip=$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: geth-teku-0-lb-ip
+                key: ip
           ports:
             - containerPort: 9000
               protocol: TCP
               name: teku-tcp
-            - containerPort: 9000
+            - containerPort: 9001
               protocol: UDP
               name: teku-udp
             - containerPort: 5051

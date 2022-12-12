@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: geth-prysm
+  name: geth-teku
   namespace: goerli
 spec:
   selector:
     matchLabels:
-      app: geth-prysm
+      app: geth-teku
       lbtype: external
-  serviceName: geth-prysm
+  serviceName: geth-teku
   podManagementPolicy: "Parallel"
   replicas: 1
   template:
     metadata:
       labels:
-        app: geth-prysm
+        app: geth-teku
         eth: goerli
         lbtype: external
     spec:
@@ -47,7 +47,7 @@ spec:
           - name: PUBLIC_IP
             valueFrom:
               secretKeyRef:
-                name: eth-lb-ip
+                name: geth-teku-0-lb-ip
                 key: ip
           ports:
             - containerPort: 30303
@@ -71,39 +71,46 @@ spec:
             limits:
               memory: "6Gi"
               cpu: "2000m"
-        - image: prysmaticlabs/prysm-beacon-chain:HEAD-de73ba
-          name: prysm
+        - image: consensys/teku@sha256:3943a8c7aecb5e2f5379d67d26ebe2d37728b4a159f85f3b6b428f8676fc482d
+          name: teku
           args:
-            - --goerli
-            - --datadir=/data/prysm
-            - --execution-endpoint=http://localhost:8551
-            - --jwt-secret=/secrets/jwt
-            - --checkpoint-sync-url=https://goerli.beaconstate.ethstaker.cc
-            - --genesis-beacon-api-url=https://goerli.beaconstate.ethstaker.cc
-            - --accept-terms-of-use
-            - --p2p-tcp-port=13000
-            - --p2p-udp-port=12000
-            - --grpc-gateway-host=0.0.0.0
-            - --grpc-gateway-port=3500
-            - --grpc-max-msg-size=200000000
-            - --p2p-max-peers=100
-            - --p2p-host-ip=$(PUBLIC_IP)
+            - --network=goerli
+            - --data-path=/data/teku
+            - --p2p-enabled=true
+            - --p2p-interface=0.0.0.0
+            - --p2p-peer-lower-bound=100
+            - --p2p-peer-upper-bound=75
+            - --rest-api-enabled=true
+            - --rest-api-port=5051
+            - --rest-api-docs-enabled=true
+            - --rest-api-interface=0.0.0.0
+            - --rest-api-host-allowlist=*
+            - --metrics-enabled=true
+            - --metrics-host-allowlist=*
+            - --metrics-port=8080
+            - --ee-endpoint=http://localhost:8551
+            - --ee-jwt-secret-file=/secrets/jwt
+            - --p2p-port=9000
+            - --p2p-udp-port=9001
+            - --logging=INFO
+            - --initial-state=https://goerli.beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
+            - --p2p-advertised-ip=$(PUBLIC_IP)
           env:
           - name: PUBLIC_IP
             valueFrom:
               secretKeyRef:
-                name: eth-lb-ip
+                name: geth-teku-0-lb-ip
                 key: ip
           ports:
-            - containerPort: 13000
+            - containerPort: 9000
               protocol: TCP
-              name: prysm-tcp
-            - containerPort: 12000
+              name: teku-tcp
+            - containerPort: 9001
               protocol: UDP
-              name: prysm-udp
-            - containerPort: 3500
+              name: teku-udp
+            - containerPort: 5051
               protocol: TCP
-              name: prysm-api
+              name: teku-api
           volumeMounts:
             - mountPath: /data
               name: eth-goerli-pvc
@@ -119,7 +126,7 @@ spec:
       initContainers:
       - name: init-datadir
         image: busybox
-        command: ['sh', '-c', "mkdir -p /data/geth /data/prysm"]
+        command: ['sh', '-c', "mkdir -p /data/geth /data/teku"]
         volumeMounts:
         - mountPath: /data
           name: eth-goerli-pvc

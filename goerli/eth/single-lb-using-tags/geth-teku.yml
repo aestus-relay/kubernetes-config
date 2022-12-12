@@ -32,7 +32,7 @@ spec:
             - --discovery.port=30306
             - --http.api=eth,net,personal,web3,flashbots
             - --http.addr=0.0.0.0
-            - --http.port=8545
+            - --http.port=8546
             - --http.vhosts=*
             - --metrics
             - --metrics.expensive
@@ -41,7 +41,7 @@ spec:
             - --authrpc.jwtsecret=/secrets/jwt
             - --authrpc.addr=0.0.0.0
             - --authrpc.vhosts=*
-            - --maxpeers=50
+            - --maxpeers=100
             - --nat=extip:$(PUBLIC_IP)
           env:
           - name: PUBLIC_IP
@@ -56,7 +56,7 @@ spec:
             - containerPort: 30306
               protocol: UDP
               name: geth-udp
-            - containerPort: 8545
+            - containerPort: 8546
               protocol: TCP
               name: geth-rpc
           volumeMounts:
