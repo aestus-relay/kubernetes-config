@@ -28,8 +28,8 @@ spec:
             - --mainnet
             - --datadir=/data/geth
             - --http
-            - --port=30305
-            - --discovery.port=30306
+            - --port=30303
+            - --discovery.port=30304
             - --http.api=eth,net,personal,web3,flashbots
             - --http.addr=0.0.0.0
             - --http.port=8545
@@ -41,19 +41,19 @@ spec:
             - --authrpc.jwtsecret=/secrets/jwt
             - --authrpc.addr=0.0.0.0
             - --authrpc.vhosts=*
-            - --maxpeers=50
+            - --maxpeers=100
             - --nat=extip:$(PUBLIC_IP)
           env:
           - name: PUBLIC_IP
             valueFrom:
               secretKeyRef:
-                name: eth-lb-ip
+                name: geth-teku-0-lb-ip
                 key: ip
           ports:
-            - containerPort: 30305
+            - containerPort: 30303
               protocol: TCP
               name: geth-tcp
-            - containerPort: 30306
+            - containerPort: 30304
               protocol: UDP
               name: geth-udp
             - containerPort: 8545
@@ -91,7 +91,9 @@ spec:
             - --ee-endpoint=http://localhost:8551
             - --ee-jwt-secret-file=/secrets/jwt
             - --p2p-port=9000
+            - --p2p-advertised-port=9000
             - --p2p-udp-port=9001
+            - --p2p-advertised-udp-port=9001
             - --logging=INFO
             - --initial-state=https://beaconstate.ethstaker.cc/eth/v2/debug/beacon/states/finalized
             - --p2p-advertised-ip=$(PUBLIC_IP)
@@ -99,7 +101,7 @@ spec:
           - name: PUBLIC_IP
             valueFrom:
               secretKeyRef:
-                name: eth-lb-ip
+                name: geth-teku-0-lb-ip
                 key: ip
           ports:
             - containerPort: 9000

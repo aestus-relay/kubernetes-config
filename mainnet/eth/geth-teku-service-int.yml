@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: geth-teku
+  namespace: mainnet
+  labels:
+    app: geth-teku
+spec:
+  clusterIP: None
+  selector:
+    app: geth-teku
+  ports:
+  - name: teku-rpc
+    port: 5051
+    protocol: TCP
+  - name: geth-rpc
+    port: 8545
+    protocol: TCP
+

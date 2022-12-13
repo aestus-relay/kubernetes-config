@@ -41,13 +41,13 @@ spec:
             - --authrpc.jwtsecret=/secrets/jwt
             - --authrpc.addr=0.0.0.0
             - --authrpc.vhosts=*
-            - --maxpeers=50
+            - --maxpeers=100
             - --nat=extip:$(PUBLIC_IP)
           env:
           - name: PUBLIC_IP
             valueFrom:
               secretKeyRef:
-                name: eth-lb-ip
+                name: geth-prysm-0-lb-ip
                 key: ip
           ports:
             - containerPort: 30303
@@ -91,7 +91,7 @@ spec:
           - name: PUBLIC_IP
             valueFrom:
               secretKeyRef:
-                name: eth-lb-ip
+                name: geth-prysm-0-lb-ip
                 key: ip
           ports:
             - containerPort: 13000
