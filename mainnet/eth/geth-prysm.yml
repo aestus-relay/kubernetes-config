@@ -69,8 +69,8 @@ spec:
               memory: "7Gi"
               cpu: "2000m"
             limits:
-              memory: "10Gi"
-              cpu: "3000m"
+              memory: "14Gi"
+              cpu: "4000m"
         - image: prysmaticlabs/prysm-beacon-chain:HEAD-de73ba
           name: prysm
           args:

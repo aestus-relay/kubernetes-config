@@ -69,8 +69,8 @@ spec:
               memory: "7Gi"
               cpu: "2000m"
             limits:
-              memory: "10Gi"
-              cpu: "3000m"
+              memory: "14Gi"
+              cpu: "4000m"
         - image: consensys/teku@sha256:3943a8c7aecb5e2f5379d67d26ebe2d37728b4a159f85f3b6b428f8676fc482d
           name: teku
           args:
