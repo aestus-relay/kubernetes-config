@@ -13,3 +13,6 @@ kubectl wait \
 	--all CustomResourceDefinition \
 	--namespace=monitoring
 kubectl apply -f manifests/
+
+# Patch to keep metrics-server working
+kubectl patch networkpolicy prometheus-k8s -n monitoring --patch-file prometheus-k8s-patch.yml
