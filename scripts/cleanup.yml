@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cleanup
+spec:
+  containers:
+  - image: austonst/mev-boost-relay@sha256:4f3119814d6b3a4f73cc8fd4762d1a41abb3429bb24bf44d224d06dd69e1788e
+    command:
+      - "sleep"
+      - "86400"
+    imagePullPolicy: IfNotPresent
+    name: cleanup
+    volumeMounts:
+    - mountPath: /backup
+      name: backup
+    env:
+    - name: POSTGRES_USER
+      valueFrom:
+        secretKeyRef:
+          name: relay-user-credentials
+          key: username
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: relay-user-credentials
+          key: password
+    - name: POSTGRES_URI
+      valueFrom:
+        configMapKeyRef:
+          name: relay-db-ref-private-connection
+          key: host
+    - name: POSTGRES_PORT
+      valueFrom:
+        configMapKeyRef:
+          name: relay-db-ref-private-connection
+          key: port
+    - name: DB_DONT_APPLY_SCHEMA
+      value: "1"
+    - name: DB_TABLE_PREFIX
+      value: "dev"
+
+  restartPolicy: Always
+  volumes:
+  - name: backup
+    persistentVolumeClaim:
+      claimName: backup-pvc
