@@ -70,7 +70,6 @@ spec:
               cpu: "2000m"
             limits:
               memory: "14Gi"
-              cpu: "4000m"
         - image: prysmaticlabs/prysm-beacon-chain:HEAD-de73ba
           name: prysm
           args:
@@ -114,7 +113,6 @@ spec:
               cpu: "2000m"
             limits:
               memory: "10Gi"
-              cpu: "3000m"
       initContainers:
       - name: init-datadir
         image: busybox
