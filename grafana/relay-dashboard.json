@@ -1,0 +1,3734 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 27,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Blocks",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Value"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "interval": "12s",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` [$__interval]))",
+          "hide": true,
+          "legendFormat": "total",
+          "queryType": "range",
+          "refId": "total"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(msg) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^block validation.*` [$__interval]))",
+          "hide": false,
+          "legendFormat": "{{msg}}",
+          "queryType": "range",
+          "refId": "block validation"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^incorrect prev_randao.*` [$__interval]))",
+          "hide": false,
+          "legendFormat": "incorrect prev_randao",
+          "queryType": "range",
+          "refId": "incorrect prev_randao"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(msg) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg = `prev_randao is not known yet` [$__interval]))",
+          "hide": false,
+          "legendFormat": "{{msg}}",
+          "queryType": "range",
+          "refId": "prev_randao not known"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^already have a newer payload.*` [$__interval]))",
+          "hide": false,
+          "legendFormat": "already have a newer payload",
+          "queryType": "range",
+          "refId": "newer payload"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(msg) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg = `rejecting submission because payload for this slot was already delivered` [$__interval]))",
+          "hide": false,
+          "legendFormat": "{{msg}}",
+          "queryType": "range",
+          "refId": "already delivered"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^could not find slot duty` [$__interval]))",
+          "hide": true,
+          "legendFormat": "could not find slot duty",
+          "queryType": "range",
+          "refId": "could not find slot duty"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(msg) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg !~ `^block validation.*` | msg !~ `^incorrect prev_randao.*` | msg != `prev_randao is not known yet` | msg !~ `^already have a newer payload.*` | msg != `received block from builder` | msg != `rejecting submission because payload for this slot was already delivered` | msg != `could not find slot duty` [$__interval]))",
+          "hide": false,
+          "legendFormat": "UNTRACKED: {{msg}}",
+          "queryType": "range",
+          "refId": "uncategorized"
+        }
+      ],
+      "title": "submitNewBlock Calls Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Blocks",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 14,
+      "interval": "12s",
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "groupWidth": 0.5,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "slot",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` [$__range]))",
+          "hide": true,
+          "legendFormat": "total",
+          "queryType": "instant",
+          "refId": "total"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^block validation successful.*` [$__range]))",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "instant",
+          "refId": "validation successful"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^block validation failed.*` [$__range]))",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "instant",
+          "refId": "validation failed"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^incorrect prev_randao.*` [$__range]))",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "instant",
+          "refId": "incorrect prev_randao"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg = `prev_randao is not known yet` [$__range]))",
+          "hide": false,
+          "legendFormat": "{{msg}}",
+          "queryType": "instant",
+          "refId": "prev_randao not known"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^already have a newer payload.*` [$__range]))",
+          "hide": false,
+          "legendFormat": "already have a newer payload",
+          "queryType": "instant",
+          "refId": "newer payload"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg = `rejecting submission because payload for this slot was already delivered` [$__range]))",
+          "hide": false,
+          "legendFormat": "Already Delivered",
+          "queryType": "instant",
+          "refId": "already delivered"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(slot, namespace) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg !~ `^block validation.*` | msg !~ `^incorrect prev_randao.*` | msg != `prev_randao is not known yet` | msg !~ `^already have a newer payload.*` | msg != `received block from builder` | msg != `rejecting submission because payload for this slot was already delivered` [$__range]))",
+          "hide": false,
+          "legendFormat": "UNTRACKED: {{msg}}",
+          "queryType": "instant",
+          "refId": "uncategorized"
+        }
+      ],
+      "title": "submitNewBlock Calls Per Slot",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "slot",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "slot",
+                "Value #validation failed",
+                "Value #prev_randao not known",
+                "Value #already delivered",
+                "Value #validation successful"
+              ]
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "Value #(.*)",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Blocks",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 13,
+      "interval": "12s",
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "count by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `` | logfmt | method = `submitNewBlock` | msg = `received block from builder` [$__range]))",
+          "hide": false,
+          "legendFormat": "{{slot}}",
+          "queryType": "instant",
+          "refId": "B",
+          "resolution": 1
+        }
+      ],
+      "title": "Blocks Submitted By Slot",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Blocks",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "pattern": "0xae9.*",
+                "result": {
+                  "index": 0,
+                  "text": "Ours"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xa7b4d.*",
+                "result": {
+                  "index": 1,
+                  "text": "Ours"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xb67a514.*",
+                "result": {
+                  "index": 2,
+                  "text": "Illuminate"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xb2990ad.*",
+                "result": {
+                  "index": 3,
+                  "text": "bloXroute1"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xa10dec.*",
+                "result": {
+                  "index": 4,
+                  "text": "bloXroute2"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xa8eaba.*",
+                "result": {
+                  "index": 5,
+                  "text": "BlockChain"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0x80c73.*",
+                "result": {
+                  "index": 6,
+                  "text": "bloXroute3"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0x83d34.*",
+                "result": {
+                  "index": 7,
+                  "text": "rsync"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xa1b0.*",
+                "result": {
+                  "index": 8,
+                  "text": "poolpi"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xaa1488.*",
+                "result": {
+                  "index": 9,
+                  "text": "bloXroute4"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xb9b50.*",
+                "result": {
+                  "index": 10,
+                  "text": "bloXroute5"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0x84b02.*",
+                "result": {
+                  "index": 11,
+                  "text": "lightspeed1"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xb3a4b.*",
+                "result": {
+                  "index": 12,
+                  "text": "lightspeed2"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0x8955.*",
+                "result": {
+                  "index": 13,
+                  "text": "payload.de"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0x8b8e.*",
+                "result": {
+                  "index": 14,
+                  "text": "bloXroute6"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xa858.*",
+                "result": {
+                  "index": 15,
+                  "text": "??? (0xa858)"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0x965a.*",
+                "result": {
+                  "index": 16,
+                  "text": "bloXroute7"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xa0d0.*",
+                "result": {
+                  "index": 17,
+                  "text": "manta1"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xb1b7.*",
+                "result": {
+                  "index": 18,
+                  "text": "manta2"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "0xb5a68.*",
+                "result": {
+                  "index": 19,
+                  "text": "manta3"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "(0x.{12}).*",
+                "result": {
+                  "index": 20,
+                  "text": "$1"
+                }
+              },
+              "type": "regex"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 12,
+      "interval": "12s",
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum by(builderPubkey) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `` | logfmt | method = `submitNewBlock` | msg = `received block from builder` [$__range]))",
+          "hide": false,
+          "legendFormat": "{{builderPubkey}}",
+          "queryType": "instant",
+          "refId": "A"
+        }
+      ],
+      "title": "Blocks Submitted In Time Range By Builder",
+      "transformations": [],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 10,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=~\"relay-api-builder|relay-api-proposer|relay-api-data|relay-website|relay-housekeeper\"} | logfmt | level != `info` | error !~ `.*requested slot number is higher than head slot number` | msg !~ `^missed slot.*` | msg !~ `.*not a known validator.*` | msg != `could not find slot duty`",
+          "maxLines": 200,
+          "queryType": "range",
+          "refId": "logs"
+        }
+      ],
+      "title": "Questionable Log Entries",
+      "type": "logs"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Payloads",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 8
+      },
+      "id": 7,
+      "interval": "12s",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered` [$__interval]))",
+          "legendFormat": "Payloads",
+          "queryType": "range",
+          "refId": "payloads"
+        }
+      ],
+      "title": "Payloads Delivered",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 18,
+        "y": 8
+      },
+      "id": 15,
+      "interval": "12s",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered` [$__range]))",
+          "legendFormat": "",
+          "queryType": "instant",
+          "refId": "Count"
+        }
+      ],
+      "title": "Payloads Delivered in Time Range",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 8
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "/^slotHead$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | msg  =~ `updated headSlot.*`",
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Current Slot",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": false,
+            "source": "labels"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 18,
+        "y": 12
+      },
+      "id": 16,
+      "interval": "12s",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "firstNotNull"
+          ],
+          "fields": "/^eth$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered`",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "payloads"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | line_format `eth={{ divf .value 1000000000000000000 | printf \"%3.6f\" }}` | logfmt | msg = `block validation successful`",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "builder blocks"
+        }
+      ],
+      "title": "Last Proposed Value",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "blockHash|value|slot|eth"
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "blockHash",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "blockHash",
+                "slot 1",
+                "eth",
+                "value"
+              ]
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "value"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "slot 1"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "slot"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "Not in time range",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 12
+      },
+      "id": 20,
+      "interval": "12s",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "firstNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered`",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "payloads"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | line_format `eth={{ divf .value 1000000000000000000 | printf \"%3.6f\" }}` | logfmt | msg = `block validation successful`",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "builder blocks"
+        }
+      ],
+      "title": "Last Proposed Slot",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "blockHash|slot"
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "blockHash",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "blockHash",
+                "slot 1"
+              ]
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "slot"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "slot 1"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Validation Time (s)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 3,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 16
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt",
+          "hide": false,
+          "queryType": "range",
+          "refId": "Queue"
+        }
+      ],
+      "title": "Block Validation Duration/TX",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "Line"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Time",
+                "duration",
+                "tx"
+              ],
+              "pattern": "Time|duration"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "duration"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "tx"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": "duration",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "tx"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Validation Time (s)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 3,
+          "mappings": [
+            {
+              "options": {
+                "pattern": "0xae9.*",
+                "result": {
+                  "index": 0,
+                  "text": "Ours"
+                }
+              },
+              "type": "regex"
+            },
+            {
+              "options": {
+                "pattern": "(0x.{12}).*",
+                "result": {
+                  "index": 1,
+                  "text": "$1"
+                }
+              },
+              "type": "regex"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0xa1b0ca22ae78b65946f00441283c82618ac9b31f979ecf2e6d458b5d91f781c42429444951ec54f68beb5d3a7ca14a38 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "poolpi"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0x83d3495a2951065cf19c4d282afca0a635a39f6504bd76282ed0138fe28680ec60fa3fd149e6d27a94a7d90e7b1fb640 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "rsync"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0x80c7311597316f871363f8395b6a8d056071d90d8eb27defd14759e8522786061b13728623452740ba05055f5ba9d3d5 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "bloXroute3"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0xaa1488eae4b06a1fff840a2b6db167afc520758dc2c8af0dfb57037954df3431b747e2f900fe8805f05d635e9a29717b duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "bloXroute4"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0xb9b50821ec5f01bb19ec75e0f22264fa9369436544b65c7cf653109dd26ef1f65c4fcaf1b1bcd2a7278afc34455d3da6 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "bloXroute5"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0x84b02bdb674a28dea0467d3dded2b4aad11c0c5dba79b3d11c38476e2f45eb937ac078492781cca8d2123c2c574a7eb8 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "lightspeed1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0xb3a4b137b0224321813151568035e4c0dd7af8a2523a606a73b7d459a6202e7d6d58f2149a32bc2fe85980866fdc0c92 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "lightspeed2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0xae9d28a357e2ac681eacee81998a726fa712d55a735f0e044e2aac25929d2139988cde9b2e36b9917d5fd05609bd0632 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "ours"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0x89551cb5def7a710d58c3f3c0b234266df9cab138d6bd79e58b03c3681030751f1aab2e2b08a706e2aba6db23ee1fb8b duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "payload.de"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0x8b8edce58fafe098763e4fabdeb318d347f9238845f22c507e813186ea7d44adecd3028f9288048f9ad3bc7c7c735fba duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "bloXroute6"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0x965a05a1ba338f4bbbb97407d70659f4cea2146d83ac5da6c2f3de824713c927dcba706f35322d65764912e7756103e2 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "bloXroute7"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0xa0d0dbdf7b5eda08c921dee5da7c78c34c9685db3e39e81eb91da94af29eaa50f1468813c86503bf41b4b51bf772800e duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "manta1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0xb1b734b8dd42b4744dc98ea330c3d9da64b7afc050afed96875593c73937d530a773e35ddc4b480f9d2e1d5ba452a469 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "manta2"
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "0xb5a688d26d7858b38c44f44568d68fb94f112fc834cd225d32dc52f0277c2007babc861f6f157a6fc6c1dc25bf409046 duration"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 16
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt",
+          "hide": false,
+          "queryType": "range",
+          "refId": "Queue"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"block-queue\"} |= `duration`",
+          "hide": true,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Block Validation Duration by Builder",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "Line"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "builderPubkey|duration|Time"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "duration"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "builderPubkey"
+            ]
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Processing Time (s)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 3
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 16
+      },
+      "id": 21,
+      "interval": "12s",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "code",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed`",
+          "legendFormat": "Payloads",
+          "queryType": "range",
+          "refId": "registrations"
+        }
+      ],
+      "title": "Validator Registration Timing",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "time",
+                "timeNeededSec"
+              ]
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "time"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "timeNeededSec"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrations"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrationsActive"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrationsNew"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrationsProcessed"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Processing Time / Validator (s)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 3,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 3
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 16
+      },
+      "id": 22,
+      "interval": "12s",
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed`",
+          "legendFormat": "Payloads",
+          "queryType": "range",
+          "refId": "registrations"
+        }
+      ],
+      "title": "Validator Registration Time per Validator",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "time",
+                "timeNeededSec",
+                "numRegistrationsProcessed"
+              ]
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "time"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "timeNeededSec"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrations"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrationsActive"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrationsNew"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrationsProcessed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "time/validator",
+            "binary": {
+              "left": "timeNeededSec",
+              "operator": "/",
+              "reducer": "sum",
+              "right": "numRegistrationsProcessed"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "The validation queue length as reported by the priority queue. These are blocks that have been added to the queue but not picked up by a worker routine. Reported as soon as a block as added to the queue, so minimum is 1.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Queue Length (blocks)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 24
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"block-queue\"} |= `Request added to queue`",
+          "queryType": "range",
+          "refId": "Queue"
+        }
+      ],
+      "title": "Validation Prio Queue Length",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "auto",
+            "replace": false,
+            "source": "Line"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "lowPrio"
+              ],
+              "pattern": "lowPrio|Time"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "lowPrio"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "The full number of blocks either undergoing or waiting for validation as reported by the builder API",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "points",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 24
+      },
+      "id": 27,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | msg = `block validation successful`",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Validation numWaiting",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "json",
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "time|numWaiting"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "numWaiting"
+              },
+              {
+                "dateFormat": "",
+                "destinationType": "time",
+                "targetField": "time"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "displayName": "Time (s)",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 24
+      },
+      "id": 29,
+      "interval": "12s",
+      "options": {
+        "bucketOffset": 0,
+        "legend": {
+          "calcs": [
+            "max",
+            "mean",
+            "stdDev"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        }
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed`",
+          "legendFormat": "Payloads",
+          "queryType": "range",
+          "refId": "registrations"
+        }
+      ],
+      "title": "Validator Registration Histogram",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "time",
+                "timeNeededSec"
+              ]
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "time"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "timeNeededSec"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrations"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrationsActive"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrationsNew"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "numRegistrationsProcessed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "histogram",
+          "options": {
+            "bucketSize": 0.1,
+            "combine": false,
+            "fields": {}
+          }
+        }
+      ],
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Time (s)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 24
+      },
+      "id": 37,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "quantile_over_time(0.5, {namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed` | unwrap timeNeededSec [1h]) by (method)",
+          "hide": false,
+          "legendFormat": "50%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "50%"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "code",
+          "expr": "quantile_over_time(0.95, {namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed` | unwrap timeNeededSec [1h]) by (method)",
+          "hide": false,
+          "legendFormat": "95%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "95%"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "code",
+          "expr": "quantile_over_time(0.99, {namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed` | unwrap timeNeededSec [1h]) by (method)",
+          "hide": false,
+          "legendFormat": "99%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "99%"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "code",
+          "expr": "quantile_over_time(0.999, {namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed` | unwrap timeNeededSec [1h]) by (method)",
+          "hide": false,
+          "legendFormat": "99.9%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "99.9%"
+        }
+      ],
+      "title": "Validator Registration Time Quantiles (1 hr)",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "extractFields",
+          "options": {
+            "source": "Line"
+          }
+        },
+        {
+          "disabled": true,
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "Time|duration"
+            }
+          }
+        },
+        {
+          "disabled": true,
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "duration"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1
+          },
+          "displayName": "Time (s)",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 32
+      },
+      "id": 28,
+      "options": {
+        "bucketOffset": 0,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"block-queue\"} |= `duration`",
+          "queryType": "range",
+          "refId": "Queue"
+        }
+      ],
+      "title": "Block Validation Histogram",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "Line"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "duration"
+              ],
+              "pattern": "duration"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "duration"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "histogram",
+          "options": {
+            "bucketSize": 0.1,
+            "combine": false,
+            "fields": {}
+          }
+        }
+      ],
+      "type": "histogram"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 3,
+          "mappings": [
+            {
+              "options": {
+                "pattern": "([0-9]*).*",
+                "result": {
+                  "index": 0,
+                  "text": "$1"
+                }
+              },
+              "type": "regex"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "0xae9d28a357e2ac681eacee81998a726fa712d55a735f0e044e2aac25929d2139988cde9b2e36b9917d5fd05609bd0632 duration"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "ours"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 32
+      },
+      "id": 32,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt",
+          "hide": false,
+          "queryType": "range",
+          "refId": "Queue"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"block-queue\"} |= `duration`",
+          "hide": true,
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Max Validation Duration by Slot",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "Line"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "duration",
+                "slot"
+              ],
+              "pattern": "slot|duration"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "duration"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "slot"
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "# Rejected Blocks",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "pattern": "{builderPubkey=\"(0x[0-9]*)\"}",
+                "result": {
+                  "index": 0,
+                  "text": "$1"
+                }
+              },
+              "type": "regex"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 32
+      },
+      "id": 34,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "count by(builderPubkey) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `fee recipient does not match` | logfmt [$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Builders w/ Incorrect Fee Recipients",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "{builderPubkey=\"(0x.{6}).*\"}",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": [
+              "count"
+            ]
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Time (s)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 40
+      },
+      "id": 35,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "code",
+          "expr": "quantile_over_time(0.5, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [5m]) by (builderIsHighPrio)",
+          "hide": false,
+          "legendFormat": "50%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "50%"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "quantile_over_time(0.95, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [5m]) by (builderIsHighPrio)",
+          "hide": false,
+          "legendFormat": "95%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "95%"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "quantile_over_time(0.99, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [5m]) by (builderIsHighPrio)",
+          "hide": false,
+          "legendFormat": "99%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "99%"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "quantile_over_time(0.999, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [5m]) by (builderIsHighPrio)",
+          "hide": false,
+          "legendFormat": "99.9%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "99.9%"
+        }
+      ],
+      "title": "Block Validation Duration Quantiles (5 min)",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "extractFields",
+          "options": {
+            "source": "Line"
+          }
+        },
+        {
+          "disabled": true,
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "Time|duration"
+            }
+          }
+        },
+        {
+          "disabled": true,
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "duration"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Time (s)",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 2,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 40
+      },
+      "id": 36,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "quantile_over_time(0.5, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [1h]) by (builderIsHighPrio)",
+          "hide": false,
+          "legendFormat": "50%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "50%"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "quantile_over_time(0.95, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [1h]) by (builderIsHighPrio)",
+          "hide": false,
+          "legendFormat": "95%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "95%"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "quantile_over_time(0.99, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [1h]) by (builderIsHighPrio)",
+          "hide": false,
+          "legendFormat": "99%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "99%"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "quantile_over_time(0.999, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [1h]) by (builderIsHighPrio)",
+          "hide": false,
+          "legendFormat": "99.9%",
+          "maxLines": 5000,
+          "queryType": "range",
+          "refId": "99.9%"
+        }
+      ],
+      "title": "Block Validation Duration Quantiles (1 hr)",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "extractFields",
+          "options": {
+            "source": "Line"
+          }
+        },
+        {
+          "disabled": true,
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "Time|duration"
+            }
+          }
+        },
+        {
+          "disabled": true,
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "duration"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "YGOdCFc4z"
+      },
+      "description": "Only meaningful if there was a proposal in the time range and the slot is displayed, otherwise these aren't limited to proposed blocks",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "slot"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 92
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "blockHash"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 247
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "id": 17,
+      "interval": "12s",
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "9.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered`",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "payloads"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "editorMode": "builder",
+          "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | msg = `block validation successful`",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "builder blocks"
+        }
+      ],
+      "title": "Builder Identification (Proposed Blocks)",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "replace": true,
+            "source": "labels"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "blockHash",
+                "builderPubkey"
+              ],
+              "pattern": "blockHash|slot|builderPubkey"
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "blockHash",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "blockHash",
+                "slot 1",
+                "builderPubkey"
+              ]
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "slot"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "id": 2,
+      "panels": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 12,
+            "x": 0,
+            "y": 41
+          },
+          "id": 4,
+          "options": {
+            "dedupStrategy": "none",
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "YGOdCFc4z"
+              },
+              "editorMode": "builder",
+              "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt",
+              "maxLines": 200,
+              "queryType": "range",
+              "refId": "A"
+            }
+          ],
+          "title": "Proposer API",
+          "type": "logs"
+        },
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "YGOdCFc4z"
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 12,
+            "x": 12,
+            "y": 41
+          },
+          "id": 5,
+          "options": {
+            "dedupStrategy": "none",
+            "enableLogDetails": true,
+            "prettifyLogMessage": false,
+            "showCommonLabels": false,
+            "showLabels": false,
+            "showTime": false,
+            "sortOrder": "Descending",
+            "wrapLogMessage": false
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "loki",
+                "uid": "YGOdCFc4z"
+              },
+              "editorMode": "builder",
+              "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt",
+              "maxLines": 200,
+              "queryType": "range",
+              "refId": "A"
+            }
+          ],
+          "title": "Builder API",
+          "type": "logs"
+        }
+      ],
+      "title": "Full Logs",
+      "type": "row"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 37,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "mainnet",
+          "value": "mainnet"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Namespace",
+        "options": [
+          {
+            "selected": true,
+            "text": "mainnet",
+            "value": "mainnet"
+          },
+          {
+            "selected": false,
+            "text": "goerli",
+            "value": "goerli"
+          }
+        ],
+        "query": "mainnet, goerli",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Relay",
+  "uid": "gBXGD5c4k",
+  "version": 46,
+  "weekStart": ""
+}
