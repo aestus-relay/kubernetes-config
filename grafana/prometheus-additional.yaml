@@ -1,0 +1,15 @@
+- job_name: 'geth-p-0'
+  scrape_interval: 1s
+  metrics_path: '/debug/metrics/prometheus'
+  static_configs:
+    - targets: ['geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:6060']
+- job_name: 'geth-t-0'
+  scrape_interval: 1s
+  metrics_path: '/debug/metrics/prometheus'
+  static_configs:
+    - targets: ['geth-teku-0.geth-teku.mainnet.svc.cluster.local:6060']
+- job_name: 'geth-p-1'
+  scrape_interval: 1s
+  metrics_path: '/debug/metrics/prometheus'
+  static_configs:
+    - targets: ['10.108.0.8:6060']

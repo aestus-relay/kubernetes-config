@@ -21,7 +21,7 @@ spec:
         args:
           - /app/prio-load-balancer
           - --http=0.0.0.0:8080
-          - --nodes=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:8545,http://geth-teku-0.geth-teku.mainnet.svc.cluster.local:8545
+          - --nodes=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:8545,http://geth-teku-0.geth-teku.mainnet.svc.cluster.local:8545,http://10.108.0.8:8545
           - --redis=dev
         ports:
           - containerPort: 8080

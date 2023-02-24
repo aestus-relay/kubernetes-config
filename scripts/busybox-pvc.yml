@@ -1,7 +1,7 @@
 #1. change desired pvc claim ref and namespace 
 #2. scale down relevant statefulset: "kubectl scale statefulsets geth-teku --replicas=0 -n goerli"
 #3. apply this deployment
-#4. attach and do stuff: "kubectl exec --stdin --tty eth-attach-85cd6985c8-bmhhw -n mainnet -- /bin/sh"
+#4. attach and do stuff: "kubectl exec --stdin --tty busybox-5cc8f6f7f4-r5wxn -n mainnet -- /bin/sh"
 #5. delete deployment and scale replicas to 1
 apiVersion: apps/v1
 kind: Deployment

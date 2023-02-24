@@ -16,4 +16,3 @@ spec:
   - name: geth-rpc
     port: 8545
     protocol: TCP
-
