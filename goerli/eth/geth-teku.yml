@@ -30,7 +30,7 @@ spec:
             - --http
             - --port=30303
             - --discovery.port=30304
-            - --http.api=eth,net,personal,web3,flashbots
+            - --http.api=eth,net,personal,web3,flashbots,admin
             - --http.addr=0.0.0.0
             - --http.port=8545
             - --http.vhosts=*

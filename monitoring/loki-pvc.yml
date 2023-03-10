@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    pv.kubernetes.io/bind-completed: "yes"
+    pv.kubernetes.io/bound-by-controller: "yes"
+    volume.beta.kubernetes.io/storage-provisioner: dobs.csi.digitalocean.com
+    volume.kubernetes.io/storage-provisioner: dobs.csi.digitalocean.com
+  creationTimestamp: "2023-02-12T21:13:54Z"
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app: loki
+    release: loki
+  name: storage-loki-0
+  namespace: monitoring
+  resourceVersion: "37189832"
+  uid: eefac9bc-7979-4cef-b0ca-313edb2980d0
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: do-block-storage
+  volumeMode: Filesystem
+  volumeName: pvc-eefac9bc-7979-4cef-b0ca-313edb2980d0
+status:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  phase: Bound
