@@ -15,6 +15,7 @@ namespace="${1}"
 # Create a pod for executing the backup
 kubectl apply -f cleanup.yml -n "${namespace}"
 kubectl wait --for=condition=ready -n "${namespace}" pod cleanup
+kubectl exec cleanup -n "${namespace}" -- sh -c 'mkdir -p /backup/payloads /backup/payloads'
 
 # Query DB to figure out how much to export
 step="10000"
