@@ -16,14 +16,14 @@ spec:
         app: relay-api-data
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:4f3119814d6b3a4f73cc8fd4762d1a41abb3429bb24bf44d224d06dd69e1788e
+        - image: austonst/mev-boost-relay@sha256:be1fdada4125e06538fe40d1ffa41a6f9f20f4efb5478ab8faed9a991e9c22ba
           name: data
           args:
             - api
             - --network=goerli
             - --listen-addr=:9062
             - --apis=data
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:3500,http://geth-teku-0.geth-teku.goerli.svc.cluster.local:5051
+            - --beacon-uris=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:3500,http://geth-teku-0.geth-teku.goerli.svc.cluster.local:5051,http://10.108.0.12:3500
             - --blocksim=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:8545
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)

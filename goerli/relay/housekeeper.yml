@@ -16,12 +16,12 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:b6ddee80d5e91fe5b36a5e6680e0b70d91a2e65a770c1c818250e2a4132366e2
+        - image: austonst/mev-boost-relay@sha256:be1fdada4125e06538fe40d1ffa41a6f9f20f4efb5478ab8faed9a991e9c22ba
           name: relay-housekeeper
           args:
             - housekeeper
             - --network=goerli
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:3500,http://geth-teku-0.geth-teku.goerli.svc.cluster.local:5051
+            - --beacon-uris=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:3500,http://geth-teku-0.geth-teku.goerli.svc.cluster.local:5051,http://10.108.0.12:3500
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)
           env:
