@@ -1,0 +1,34 @@
+#1. kubectl scale --replicas=0 sts [geth-teku | geth prysm] -n mainnet
+#2. use the correct pvc
+#3. kubectl apply -f <this_script>
+#4. attach and do stuff: "kubectl exec --stdin --tty geth-teku- -n mainnet -- /bin/sh"
+#6. apk add tmux/screen and geth prune-state --data_dir = /data or do it from this script directly
+#5. kubectl scale --replicas=1 sts geth-teku -n mainnet
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geth-prune
+  namespace: mainnet
+  labels:
+    app: geth-prune
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geth-prune
+  template:
+    metadata:
+      labels:
+        app: geth-prune
+    spec:
+      containers:
+      - name: geth-prune
+        image: austonst/block-validation-geth@sha256:cf92a6454e50176597a90413c169d9493345ee97585cc4f08b9d25c0ee2e6665 
+        command: ["sh", "-c", "sleep infinity"]   
+        volumeMounts:
+        - name: eth-data
+          mountPath: /data
+      volumes:
+        - name: eth-data
+          persistentVolumeClaim:
+            claimName: eth-pvc-geth-teku-0
