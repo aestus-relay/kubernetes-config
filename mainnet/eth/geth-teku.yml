@@ -119,10 +119,10 @@ spec:
               name: jwt
           resources:
             requests:
-              memory: "7Gi"
+              memory: "12Gi"
               cpu: "2000m"
             limits:
-              memory: "10Gi"
+              memory: "16Gi"
       initContainers:
       - name: init-datadir
         image: busybox

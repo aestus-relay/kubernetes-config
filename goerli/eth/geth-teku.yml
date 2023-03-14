@@ -119,10 +119,10 @@ spec:
               name: jwt
           resources:
             requests:
-              memory: "6Gi"
+              memory: "10Gi"
               cpu: "1000m"
             limits:
-              memory: "12Gi"
+              memory: "18Gi"
               cpu: "2000m"
       initContainers:
       - name: init-datadir
