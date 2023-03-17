@@ -22,7 +22,7 @@ spec:
         runAsUser: 0
         runAsGroup: 0
       containers:
-        - image: austonst/builder@sha256:25417ba6c31aed04684c8a420436a1dd88a32ed9f7a50ab18bcfbee703446a35
+        - image: austonst/builder@sha256:a476432a54fd6511b953c5c8bb14cce9d07352be40744995bc99f20aa44cda7e
           name: geth
           args:
             - --goerli
@@ -71,7 +71,7 @@ spec:
             limits:
               memory: "6Gi"
               cpu: "2000m"
-        - image: austonst/prysm@sha256:9be1ad58586bcd78e3e0cd023eb6856ea106399c6627f72e27085168941090e6
+        - image: austonst/prysm@sha256:bb2133115a74a2fea8cffc7d12d8b4f59f241d734f0f7c62bfa9130bd11648e8
           name: prysm
           args:
             - --goerli
