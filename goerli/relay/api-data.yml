@@ -23,7 +23,7 @@ spec:
             - --network=goerli
             - --listen-addr=:9062
             - --apis=data
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:3500,http://geth-teku-0.geth-teku.goerli.svc.cluster.local:5051,http://10.108.0.12:3500
+            - --beacon-uris=http://10.108.0.12:3500,http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:3500
             - --blocksim=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:8545
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)
@@ -36,22 +36,22 @@ spec:
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: relay-user-credentials
+                name: postgresql
                 key: username
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: relay-user-credentials
+                name: postgresql
                 key: password
           - name: POSTGRES_URI
             valueFrom:
-              configMapKeyRef:
-                name: relay-db-ref-private-connection
+              secretKeyRef:
+                name: postgresql
                 key: host
           - name: POSTGRES_PORT
             valueFrom:
-              configMapKeyRef:
-                name: relay-db-ref-private-connection
+              secretKeyRef:
+                name: postgresql
                 key: port
           - name: REDIS_USER
             valueFrom:
