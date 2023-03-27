@@ -37,22 +37,22 @@ spec:
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: relay-user-credentials
+                name: postgresql
                 key: username
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: relay-user-credentials
+                name: postgresql
                 key: password
           - name: POSTGRES_URI
             valueFrom:
-              configMapKeyRef:
-                name: relay-db-ref-private-connection
+              secretKeyRef:
+                name: postgresql
                 key: host
           - name: POSTGRES_PORT
             valueFrom:
-              configMapKeyRef:
-                name: relay-db-ref-private-connection
+              secretKeyRef:
+                name: postgresql
                 key: port
           - name: REDIS_USER
             valueFrom:
