@@ -3,7 +3,7 @@
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
-helm install postgres-goerli -n pg-goerli --create-namespace -f values.yml bitnami/postgresql-ha
+helm install postgres-goerli -n pg-goerli --create-namespace -f postgres-values.yml bitnami/postgresql-ha
 
 # ------------------------------------------------------------
 # Output:

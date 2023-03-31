@@ -27,6 +27,7 @@ spec:
             - --blocksim=http://block-queue:8080
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)
+            - --memcached-uris=memcached-goerli-0.memcached-goerli.mcd-goerli.svc.cluster.local:11211,memcached-goerli-1.memcached-goerli.mcd-goerli.svc.cluster.local:11211
             - --secret-key=$(SECRET_KEY)
           ports:
             - containerPort: 9062
