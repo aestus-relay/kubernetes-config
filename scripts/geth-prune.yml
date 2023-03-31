@@ -24,11 +24,11 @@ spec:
       containers:
       - name: geth-prune
         image: austonst/block-validation-geth@sha256:cf92a6454e50176597a90413c169d9493345ee97585cc4f08b9d25c0ee2e6665 
-        command: ["sh", "-c", "sleep infinity"]   
+        command: ["geth", "snapshot", "prune-state", "--datadir=/data/geth"]
         volumeMounts:
         - name: eth-data
           mountPath: /data
       volumes:
         - name: eth-data
           persistentVolumeClaim:
-            claimName: eth-pvc-geth-teku-0
+            claimName: eth-pvc-geth-prysm-0

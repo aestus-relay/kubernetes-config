@@ -16,7 +16,7 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:be1fdada4125e06538fe40d1ffa41a6f9f20f4efb5478ab8faed9a991e9c22ba
+        - image: austonst/mev-boost-relay@sha256:c4d0c661e549b86f0bba4a6004f196adf161f2b8400799082a362583a18cf406
           name: relay-housekeeper
           args:
             - housekeeper
@@ -70,7 +70,7 @@ spec:
               memory: "500Mi"
               cpu: "1000m"
             limits:
-              memory: "1Gi"
+              memory: "1300Mi"
               cpu: "2000m"
       restartPolicy: Always
       terminationGracePeriodSeconds: 600

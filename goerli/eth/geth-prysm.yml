@@ -71,7 +71,7 @@ spec:
             limits:
               memory: "6Gi"
               cpu: "2000m"
-        - image: austonst/prysm@sha256:bb2133115a74a2fea8cffc7d12d8b4f59f241d734f0f7c62bfa9130bd11648e8
+        - image: prysmaticlabs/prysm-beacon-chain:v4.0.1
           name: prysm
           args:
             - --goerli
@@ -158,4 +158,4 @@ spec:
       storageClassName: do-block-storage
       resources:
         requests:
-          storage: 350Gi
+          storage: 400Gi
