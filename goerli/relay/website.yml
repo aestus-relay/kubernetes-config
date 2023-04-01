@@ -16,14 +16,15 @@ spec:
         app: relay-website
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:c4d0c661e549b86f0bba4a6004f196adf161f2b8400799082a362583a18cf406
+        - image: austonst/mev-boost-relay@sha256:f3a8399be75f0ecab54b1d51e3c5e9118b2876303f9fb6181379b0e6f534163e
           name: relay-website
           args:
             - website
             - --network=goerli
             - --listen-addr=:9060
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
-            - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)
+            - --redis-uris=$(REDIS_URIS)
+            - --redis-pw=$(REDIS_PASSWORD)
             - --relay-url=https://0xab78bf8c781c58078c3beb5710c57940874dd96aef2835e7742c866b4c7c0406754376c2c8285a36c630346aa5c5f833@goerli.aestus.live
             - --link-beaconchain=https://goerli.beaconcha.in
             - --link-etherscan=https://goerli.etherscan.io
@@ -52,25 +53,20 @@ spec:
               secretKeyRef:
                 name: postgresql
                 key: port
-          - name: REDIS_USER
-            valueFrom:
-              secretKeyRef:
-                name: redis-default-credentials
-                key: username
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: redis-default-credentials
+                name: redis
                 key: password
-          - name: REDIS_URI
+          - name: REDIS_URIS
             valueFrom:
-              configMapKeyRef:
-                name: redis-private-connection
-                key: host
+              secretKeyRef:
+                name: redis
+                key: allnodes
           - name: REDIS_PORT
             valueFrom:
-              configMapKeyRef:
-                name: redis-private-connection
+              secretKeyRef:
+                name: redis
                 key: port
           resources:
             requests:
