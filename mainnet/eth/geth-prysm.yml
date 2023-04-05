@@ -10,7 +10,7 @@ spec:
       lbtype: external
   serviceName: geth-prysm
   podManagementPolicy: "Parallel"
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -22,7 +22,7 @@ spec:
         runAsUser: 0
         runAsGroup: 0
       containers:
-        - image: austonst/block-validation-geth@sha256:cf92a6454e50176597a90413c169d9493345ee97585cc4f08b9d25c0ee2e6665
+        - image: austonst/builder@sha256:2e77ea3a17045184fd92b9bb9892a67854eec9325a82bce240364e6318fe0ebc
           name: geth
           args:
             - --mainnet
@@ -70,7 +70,7 @@ spec:
               cpu: "2000m"
             limits:
               memory: "14Gi"
-        - image: prysmaticlabs/prysm-beacon-chain:HEAD-de73ba
+        - image: austonst/prysm@sha256:bb7743885261dfea942a492b7d4a56efb3153e8011fd795e2cd4958649c19dce
           name: prysm
           args:
             - --mainnet
@@ -155,4 +155,4 @@ spec:
       storageClassName: do-block-storage
       resources:
         requests:
-          storage: 1200Gi
+          storage: 1500Gi

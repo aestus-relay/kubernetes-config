@@ -16,7 +16,7 @@ spec:
         app: relay-api-proposer
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:f3a8399be75f0ecab54b1d51e3c5e9118b2876303f9fb6181379b0e6f534163e
+        - image: austonst/mev-boost-relay@sha256:9b0725ff7f3859ac51076263a705b4371be2da7f3ff162d40074ebb0ce4d2bb7
           name: proposer
           args:
             - api
