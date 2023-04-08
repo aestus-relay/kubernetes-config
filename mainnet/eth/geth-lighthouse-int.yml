@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: geth-lighthouse
+  namespace: mainnet
+  labels:
+    app: geth-lighthouse
+spec:
+  clusterIP: None
+  selector:
+    app: geth-lighthouse
+  ports:
+  - name: lighthouse-rpc
+    port: 5052
+    protocol: TCP
+  - name: geth-rpc
+    port: 8545
+    protocol: TCP

@@ -1,0 +1,164 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: geth-lighthouse
+  namespace: mainnet
+spec:
+  selector:
+    matchLabels:
+      app: geth-lighthouse
+      lbtype: external
+  serviceName: geth-lighthouse
+  podManagementPolicy: "Parallel"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: geth-lighthouse
+        eth: mainnet
+        lbtype: external
+    spec:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - image: austonst/builder@sha256:2e77ea3a17045184fd92b9bb9892a67854eec9325a82bce240364e6318fe0ebc
+          name: geth
+          args:
+            - --mainnet
+            - --datadir=/data/geth
+            - --http
+            - --port=30303
+            - --discovery.port=30304
+            - --http.api=eth,net,personal,web3,flashbots,admin
+            - --http.addr=0.0.0.0
+            - --http.port=8545
+            - --http.vhosts=*
+            - --metrics
+            - --metrics.expensive
+            - --metrics.port=6060
+            - --metrics.addr=0.0.0.0
+            - --authrpc.jwtsecret=/secrets/jwt
+            - --authrpc.addr=0.0.0.0
+            - --authrpc.vhosts=*
+            - --maxpeers=100
+            - --nat=extip:$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: geth-lighthouse-0-lb-ip
+                key: ip
+          ports:
+            - containerPort: 30303
+              protocol: TCP
+              name: geth-tcp
+            - containerPort: 30304
+              protocol: UDP
+              name: geth-udp
+            - containerPort: 8545
+              protocol: TCP
+              name: geth-rpc
+          volumeMounts:
+            - mountPath: /data
+              name: eth-pvc
+            - mountPath: /secrets
+              name: jwt
+          resources:
+            requests:
+              memory: "7Gi"
+              cpu: "2000m"
+            limits:
+              memory: "14Gi"
+        - image: sigp/lighthouse:latest-modern
+          name: lighthouse
+          args:
+            - lighthouse
+            - --network=mainnet
+            - beacon_node
+            - --disable-upnp
+            - --datadir=/data/lighthouse
+            - --execution-endpoint=http://localhost:8551
+            - --execution-jwt=/secrets/jwt
+            - --checkpoint-sync-url=https://mainnet.checkpoint.sigp.io
+            - --checkpoint-sync-url-timeout=180
+            - --enr-tcp-port=9000
+            - --enr-udp-port=9001
+            - --http
+            - --http-port=5052
+            - --http-address=0.0.0.0
+            - --metrics
+            - --metrics-allow-origin=*
+            - --metrics-address=0.0.0.0
+            - --metrics-port=5054
+            - --enr-address=$(PUBLIC_IP)
+          env:
+          - name: PUBLIC_IP
+            valueFrom:
+              secretKeyRef:
+                name: geth-lighthouse-0-lb-ip
+                key: ip
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+              name: lighthouse-tcp
+            - containerPort: 9001
+              protocol: UDP
+              name: lighthouse-udp
+            - containerPort: 5052
+              protocol: TCP
+              name: lighthouse-api
+          volumeMounts:
+            - mountPath: /data
+              name: eth-pvc
+            - mountPath: /secrets
+              name: jwt
+          resources:
+            requests:
+              memory: "7Gi"
+              cpu: "2000m"
+            limits:
+              memory: "10Gi"
+      initContainers:
+      - name: init-datadir
+        image: busybox
+        command: ['sh', '-c', "mkdir -p /data/geth /data/lighthouse"]
+        volumeMounts:
+        - mountPath: /data
+          name: eth-pvc
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 600
+      volumes:
+        - name: jwt
+          secret:
+            secretName: eth-jwt
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: eth
+                  operator: In
+                  values:
+                  - mainnet
+              topologyKey: topology.kubernetes.io/zone
+          - weight: 50
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: eth
+                  operator: In
+                  values:
+                  - goerli
+              topologyKey: topology.kubernetes.io/zone
+  volumeClaimTemplates:
+  - metadata:
+      name: eth-pvc
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: do-block-storage
+      resources:
+        requests:
+          storage: 1500Gi
