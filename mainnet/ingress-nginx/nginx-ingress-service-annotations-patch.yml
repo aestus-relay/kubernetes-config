@@ -1,0 +1,5 @@
+# See https://github.com/cert-manager/cert-manager/issues/863#issuecomment-567062996
+metadata: 
+  annotations: 
+    service.beta.kubernetes.io/do-loadbalancer-hostname: "aestus.live"
+    service.beta.kubernetes.io/do-loadbalancer-size-unit: "1"
