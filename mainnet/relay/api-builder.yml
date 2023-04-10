@@ -81,6 +81,8 @@ spec:
                 key: private
           - name: BLOCKSIM_MAX_CONCURRENT
             value: "0"
+          - name: DISABLE_SSE_PAYLOAD_ATTRIBUTES
+            value: "1"
           resources:
             requests:
               memory: "1000Mi"

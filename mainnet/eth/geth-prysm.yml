@@ -70,7 +70,7 @@ spec:
               cpu: "2000m"
             limits:
               memory: "14Gi"
-        - image: austonst/prysm@sha256:bb7743885261dfea942a492b7d4a56efb3153e8011fd795e2cd4958649c19dce
+        - image: austonst/prysm@sha256:2c95b8460e29b498d11f9455589df7e264762c0003e2019f5e2a7863fac740b1
           name: prysm
           args:
             - --mainnet

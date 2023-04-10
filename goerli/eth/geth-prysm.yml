@@ -71,7 +71,7 @@ spec:
             limits:
               memory: "6Gi"
               cpu: "2000m"
-        - image: prysmaticlabs/prysm-beacon-chain:v4.0.1
+        - image: austonst/prysm@sha256:f24c5be9e56b6f4c65fe617455cc5d672228a8d117174c96535106add0220ece
           name: prysm
           args:
             - --goerli

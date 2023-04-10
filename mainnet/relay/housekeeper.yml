@@ -66,6 +66,8 @@ spec:
               configMapKeyRef:
                 name: redis-private-connection
                 key: port
+          - name: DISABLE_SSE_PAYLOAD_ATTRIBUTES
+            value: "1"
           resources:
             requests:
               memory: "1Gi"

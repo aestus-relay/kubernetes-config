@@ -16,7 +16,7 @@ spec:
         app: relay-api-data
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:9b0725ff7f3859ac51076263a705b4371be2da7f3ff162d40074ebb0ce4d2bb7
+        - image: austonst/mev-boost-relay@sha256:dbf9240ca3b74e7acd4fab1689bd3693c453939b4437854fcc98151d1b442aae
           name: data
           args:
             - api

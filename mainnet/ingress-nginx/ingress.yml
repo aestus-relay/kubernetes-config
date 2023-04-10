@@ -89,6 +89,13 @@ spec:
             name: homepage
             port:
               number: 80
+      - path: /npt
+        pathType: Prefix
+        backend:
+          service:
+            name: net-payload-test
+            port:
+              number: 8000
   - host: mainnet.aestus.live
     http:
       paths:
