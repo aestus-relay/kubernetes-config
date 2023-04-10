@@ -1,0 +1,97 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup-daily
+  namespace: mainnet
+spec:
+  schedule: "0 4 * * *"
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 43200
+      template:
+        spec:
+          containers:
+          - name: postgres-backup
+            image: austonst/cron-backup-postgres:latest
+            imagePullPolicy: IfNotPresent
+            command: ["/pg-backup.sh", "daily", "7"]
+            env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: password
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: port
+            - name: POSTGRES_DB
+              value: "relay-db"
+            volumeMounts:
+              - mountPath: /backup
+                name: backup
+          restartPolicy: OnFailure
+          volumes:
+            - name: backup
+              persistentVolumeClaim:
+                claimName: backup-pvc
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres-backup-weekly
+  namespace: mainnet
+spec:
+  schedule: "0 5 * * 0"
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 43200
+      template:
+        spec:
+          containers:
+          - name: postgres-backup
+            image: austonst/cron-backup-postgres:latest
+            imagePullPolicy: IfNotPresent
+            command: ["/pg-backup.sh", "weekly", "40"]
+            env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: password
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: host
+            - name: POSTGRES_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: port
+            - name: POSTGRES_DB
+              value: "relay-db"
+            volumeMounts:
+              - mountPath: /backup
+                name: backup
+          restartPolicy: OnFailure
+          volumes:
+            - name: backup
+              persistentVolumeClaim:
+                claimName: backup-pvc
