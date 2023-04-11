@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: geth-prysm
+  name: geth-lighthouse
   namespace: goerli
 spec:
   selector:
     matchLabels:
-      app: geth-prysm
+      app: geth-lighthouse
       lbtype: external
-  serviceName: geth-prysm
+  serviceName: geth-lighthouse
   podManagementPolicy: "Parallel"
   replicas: 1
   template:
     metadata:
       labels:
-        app: geth-prysm
+        app: geth-lighthouse
         eth: goerli
         lbtype: external
     spec:
@@ -48,7 +48,7 @@ spec:
           - name: PUBLIC_IP
             valueFrom:
               secretKeyRef:
-                name: geth-prysm-0-lb-ip
+                name: geth-lighthouse-0-lb-ip
                 key: ip
           ports:
             - containerPort: 30303
@@ -62,7 +62,7 @@ spec:
               name: geth-rpc
           volumeMounts:
             - mountPath: /data
-              name: eth-goerli-pvc
+              name: eth-pvc
             - mountPath: /secrets
               name: jwt
           resources:
@@ -72,44 +72,52 @@ spec:
             limits:
               memory: "10Gi"
               cpu: "2000m"
-        - image: austonst/prysm@sha256:f24c5be9e56b6f4c65fe617455cc5d672228a8d117174c96535106add0220ece
-          name: prysm
+        - image: austonst/lighthouse:latest
+          name: lighthouse
           args:
-            - --goerli
-            - --datadir=/data/prysm
+            - lighthouse
+            - --network=goerli
+            - beacon_node
+            - --disable-upnp
+            - --datadir=/data/lighthouse
             - --execution-endpoint=http://localhost:8551
-            - --jwt-secret=/secrets/jwt
-            - --checkpoint-sync-url=https://goerli.beaconstate.ethstaker.cc
-            - --genesis-beacon-api-url=https://goerli.beaconstate.ethstaker.cc
-            - --accept-terms-of-use
-            - --p2p-tcp-port=13000
-            - --p2p-udp-port=12000
-            - --grpc-gateway-host=0.0.0.0
-            - --grpc-gateway-port=3500
-            - --grpc-max-msg-size=200000000
-            - --p2p-max-peers=100
-            - --p2p-host-ip=$(PUBLIC_IP)
-            - --min-sync-peers=1
-            - --enable-debug-rpc-endpoints
+            - --execution-jwt=/secrets/jwt
+            - --checkpoint-sync-url=https://prater.checkpoint.sigp.io
+            - --checkpoint-sync-url-timeout=180
+            - --enr-tcp-port=9000
+            - --enr-udp-port=9001
+            - --http
+            - --http-port=5052
+            - --http-address=0.0.0.0
+            - --metrics
+            - --metrics-allow-origin=*
+            - --metrics-address=0.0.0.0
+            - --metrics-port=5054
+            - --enr-address=$(PUBLIC_IP)
+            - --eth1
+            - --http-allow-sync-stalled
+            - --disable-deposit-contract-sync
+            - --always-prepare-payload
+            - --prepare-payload-lookahead=12000
           env:
           - name: PUBLIC_IP
             valueFrom:
               secretKeyRef:
-                name: geth-prysm-0-lb-ip
+                name: geth-lighthouse-0-lb-ip
                 key: ip
           ports:
-            - containerPort: 13000
+            - containerPort: 9000
               protocol: TCP
-              name: prysm-tcp
-            - containerPort: 12000
+              name: lighthouse-tcp
+            - containerPort: 9001
               protocol: UDP
-              name: prysm-udp
-            - containerPort: 3500
+              name: lighthouse-udp
+            - containerPort: 5052
               protocol: TCP
-              name: prysm-api
+              name: lighthouse-api
           volumeMounts:
             - mountPath: /data
-              name: eth-goerli-pvc
+              name: eth-pvc
             - mountPath: /secrets
               name: jwt
           resources:
@@ -122,10 +130,10 @@ spec:
       initContainers:
       - name: init-datadir
         image: busybox
-        command: ['sh', '-c', "mkdir -p /data/geth /data/prysm"]
+        command: ['sh', '-c', "mkdir -p /data/geth /data/lighthouse"]
         volumeMounts:
         - mountPath: /data
-          name: eth-goerli-pvc
+          name: eth-pvc
       restartPolicy: Always
       terminationGracePeriodSeconds: 600
       volumes:
@@ -151,14 +159,14 @@ spec:
                 - key: eth
                   operator: In
                   values:
-                  - mainnet
+                  - goerli
               topologyKey: topology.kubernetes.io/zone
   volumeClaimTemplates:
   - metadata:
-      name: eth-goerli-pvc
+      name: eth-pvc
     spec:
       accessModes: ["ReadWriteOnce"]
       storageClassName: do-block-storage
       resources:
         requests:
-          storage: 400Gi
+          storage: 500Gi
