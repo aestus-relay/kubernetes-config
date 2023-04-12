@@ -1,0 +1,21 @@
+usePassword: true
+existingSecret: redis
+existingSecretPasswordKey: password
+
+tls:
+  enabled: false
+
+persistence:
+  enabled: true
+  storageClass: do-block-storage
+  accessMode: ReadWriteOnce
+  size: "2500Mi"
+
+redis:
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "1000m"
+
+metrics:
+  enabled: true
