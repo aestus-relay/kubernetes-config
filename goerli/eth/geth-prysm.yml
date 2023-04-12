@@ -68,7 +68,7 @@ spec:
           resources:
             requests:
               memory: "3Gi"
-              cpu: "1000m"
+              cpu: "500m"
             limits:
               memory: "10Gi"
               cpu: "2000m"
@@ -115,7 +115,7 @@ spec:
           resources:
             requests:
               memory: "6Gi"
-              cpu: "1000m"
+              cpu: "500m"
             limits:
               memory: "10Gi"
               cpu: "2000m"

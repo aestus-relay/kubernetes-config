@@ -15,7 +15,7 @@ redis:
   resources:
     requests:
       memory: "1Gi"
-      cpu: "200m"
+      cpu: "100m"
 
 metrics:
   enabled: true

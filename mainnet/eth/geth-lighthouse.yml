@@ -67,7 +67,7 @@ spec:
           resources:
             requests:
               memory: "7Gi"
-              cpu: "2000m"
+              cpu: "1000m"
             limits:
               memory: "14Gi"
         - image: sigp/lighthouse:latest-modern
@@ -116,7 +116,7 @@ spec:
           resources:
             requests:
               memory: "7Gi"
-              cpu: "2000m"
+              cpu: "1000m"
             limits:
               memory: "10Gi"
       initContainers:

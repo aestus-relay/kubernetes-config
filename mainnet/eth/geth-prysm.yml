@@ -67,7 +67,7 @@ spec:
           resources:
             requests:
               memory: "7Gi"
-              cpu: "2000m"
+              cpu: "1000m"
             limits:
               memory: "14Gi"
         - image: austonst/prysm@sha256:2c95b8460e29b498d11f9455589df7e264762c0003e2019f5e2a7863fac740b1
@@ -110,7 +110,7 @@ spec:
           resources:
             requests:
               memory: "7Gi"
-              cpu: "2000m"
+              cpu: "1000m"
             limits:
               memory: "10Gi"
       initContainers:

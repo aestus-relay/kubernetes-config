@@ -10,6 +10,7 @@ extraEnvVars:
 resources:
   requests:
     memory: 256Mi
+    cpu: "100m"
 
 persistence:
   enabled: true
