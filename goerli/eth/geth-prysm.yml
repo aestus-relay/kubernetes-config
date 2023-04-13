@@ -91,6 +91,7 @@ spec:
             - --p2p-host-ip=$(PUBLIC_IP)
             - --min-sync-peers=1
             - --enable-debug-rpc-endpoints
+            - --suggested-fee-recipient=0x9Be3570F5454fd668673fEb9C43805C533e53FFD            
           env:
           - name: PUBLIC_IP
             valueFrom:

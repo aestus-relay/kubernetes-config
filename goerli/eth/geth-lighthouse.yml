@@ -99,6 +99,8 @@ spec:
             - --disable-deposit-contract-sync
             - --always-prepare-payload
             - --prepare-payload-lookahead=12000
+            - --disable-proposer-reorgs
+            - --suggested-fee-recipient=0x9Be3570F5454fd668673fEb9C43805C533e53FFD            
           env:
           - name: PUBLIC_IP
             valueFrom:

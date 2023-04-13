@@ -43,6 +43,7 @@ spec:
             - --authrpc.vhosts=*
             - --maxpeers=100
             - --nat=extip:$(PUBLIC_IP)
+            - --cache=8192
           env:
           - name: PUBLIC_IP
             valueFrom:
@@ -66,11 +67,11 @@ spec:
               name: jwt
           resources:
             requests:
-              memory: "7Gi"
-              cpu: "1000m"
-            limits:
               memory: "14Gi"
-        - image: sigp/lighthouse:latest-modern
+              cpu: "2000m"
+            limits:
+              memory: "24Gi"
+        - image: austonst/lighthouse@sha256:c458020f6e9207910157ccf996a774746ca9079831480e66c2b42d0224e136fc
           name: lighthouse
           args:
             - lighthouse
@@ -92,6 +93,13 @@ spec:
             - --metrics-address=0.0.0.0
             - --metrics-port=5054
             - --enr-address=$(PUBLIC_IP)
+            - --eth1
+            - --http-allow-sync-stalled
+            - --disable-deposit-contract-sync
+            - --always-prepare-payload
+            - --prepare-payload-lookahead=12000
+            - --disable-proposer-reorgs
+            - --suggested-fee-recipient=0x9Be3570F5454fd668673fEb9C43805C533e53FFD
           env:
           - name: PUBLIC_IP
             valueFrom:
@@ -115,8 +123,8 @@ spec:
               name: jwt
           resources:
             requests:
-              memory: "7Gi"
-              cpu: "1000m"
+              memory: "6Gi"
+              cpu: "2000m"
             limits:
               memory: "10Gi"
       initContainers:
