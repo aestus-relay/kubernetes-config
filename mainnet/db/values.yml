@@ -2,7 +2,7 @@ persistence:
   enabled: true
   storageClass: do-block-storage
   accessMode: ReadWriteOnce
-  size: 2000Gi
+  size: 500Gi
 
 postgresql:
   username: relay

@@ -31,7 +31,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -136,7 +136,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` [$__interval]))",
@@ -148,7 +148,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(msg) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^block validation.*` [$__interval]))",
@@ -160,7 +160,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^incorrect prev_randao.*` [$__interval]))",
@@ -172,7 +172,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(msg) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg = `prev_randao is not known yet` [$__interval]))",
@@ -184,7 +184,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^already have a newer payload.*` [$__interval]))",
@@ -196,7 +196,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(msg) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg = `rejecting submission because payload for this slot was already delivered` [$__interval]))",
@@ -208,7 +208,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^could not find slot duty` [$__interval]))",
@@ -220,7 +220,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(msg) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg !~ `^block validation.*` | msg !~ `^incorrect prev_randao.*` | msg != `prev_randao is not known yet` | msg !~ `^already have a newer payload.*` | msg != `received block from builder` | msg != `rejecting submission because payload for this slot was already delivered` | msg != `could not find slot duty` [$__interval]))",
@@ -236,7 +236,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -315,7 +315,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` [$__range]))",
@@ -327,7 +327,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^block validation successful.*` [$__range]))",
@@ -339,7 +339,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^block validation failed.*` [$__range]))",
@@ -351,7 +351,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^incorrect prev_randao.*` [$__range]))",
@@ -363,7 +363,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg = `prev_randao is not known yet` [$__range]))",
@@ -375,7 +375,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg =~ `^already have a newer payload.*` [$__range]))",
@@ -387,7 +387,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg = `rejecting submission because payload for this slot was already delivered` [$__range]))",
@@ -399,7 +399,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(slot, namespace) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | method = `submitNewBlock` | msg !~ `^block validation.*` | msg !~ `^incorrect prev_randao.*` | msg != `prev_randao is not known yet` | msg !~ `^already have a newer payload.*` | msg != `received block from builder` | msg != `rejecting submission because payload for this slot was already delivered` [$__range]))",
@@ -445,7 +445,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -518,7 +518,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "count by(slot) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `` | logfmt | method = `submitNewBlock` | msg = `received block from builder` [$__range]))",
@@ -535,7 +535,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -819,7 +819,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum by(builderPubkey) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `` | logfmt | method = `submitNewBlock` | msg = `received block from builder` [$__range]))",
@@ -836,7 +836,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "gridPos": {
         "h": 8,
@@ -859,7 +859,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=~\"relay-api-builder|relay-api-proposer|relay-api-data|relay-website|relay-housekeeper\"} | logfmt | level != `info` | error !~ `.*requested slot number is higher than head slot number` | msg !~ `^missed slot.*` | msg !~ `.*not a known validator.*` | msg != `could not find slot duty`",
@@ -874,7 +874,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -953,7 +953,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered` [$__interval]))",
@@ -968,7 +968,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -1020,7 +1020,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "sum(count_over_time({namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered` [$__range]))",
@@ -1035,7 +1035,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -1081,7 +1081,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | msg  =~ `updated headSlot.*`",
@@ -1105,7 +1105,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -1156,7 +1156,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered`",
@@ -1168,7 +1168,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | line_format `eth={{ divf .value 1000000000000000000 | printf \"%3.6f\" }}` | logfmt | msg = `block validation successful`",
@@ -1249,7 +1249,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -1297,7 +1297,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered`",
@@ -1309,7 +1309,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | line_format `eth={{ divf .value 1000000000000000000 | printf \"%3.6f\" }}` | logfmt | msg = `block validation successful`",
@@ -1383,7 +1383,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -1463,7 +1463,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt",
@@ -1531,7 +1531,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -1809,7 +1809,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt",
@@ -1820,7 +1820,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"block-queue\"} |= `duration`",
@@ -1871,7 +1871,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -1950,7 +1950,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "code",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed`",
@@ -2017,7 +2017,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -2098,7 +2098,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed`",
@@ -2183,7 +2183,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "The validation queue length as reported by the priority queue. These are blocks that have been added to the queue but not picked up by a worker routine. Reported as soon as a block as added to the queue, so minimum is 1.",
       "fieldConfig": {
@@ -2263,7 +2263,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"block-queue\"} |= `Request added to queue`",
@@ -2310,7 +2310,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "The full number of blocks either undergoing or waiting for validation as reported by the builder API",
       "fieldConfig": {
@@ -2389,7 +2389,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | msg = `block validation successful`",
@@ -2438,7 +2438,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "fieldConfig": {
         "defaults": {
@@ -2495,7 +2495,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed`",
@@ -2570,7 +2570,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -2653,7 +2653,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "quantile_over_time(0.5, {namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed` | unwrap timeNeededSec [1h]) by (method)",
@@ -2666,7 +2666,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "code",
           "expr": "quantile_over_time(0.95, {namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed` | unwrap timeNeededSec [1h]) by (method)",
@@ -2679,7 +2679,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "code",
           "expr": "quantile_over_time(0.99, {namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed` | unwrap timeNeededSec [1h]) by (method)",
@@ -2692,7 +2692,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "code",
           "expr": "quantile_over_time(0.999, {namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `registerValidator` | msg = `validator registrations call processed` | unwrap timeNeededSec [1h]) by (method)",
@@ -2740,7 +2740,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -2793,7 +2793,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"block-queue\"} |= `duration`",
@@ -2846,7 +2846,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -2918,7 +2918,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt",
@@ -2929,7 +2929,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"block-queue\"} |= `duration`",
@@ -2984,7 +2984,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -3068,7 +3068,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "count by(builderPubkey) (count_over_time({namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `fee recipient does not match` | logfmt [$__interval]))",
@@ -3099,7 +3099,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -3182,7 +3182,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "code",
           "expr": "quantile_over_time(0.5, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [5m]) by (builderIsHighPrio)",
@@ -3195,7 +3195,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "quantile_over_time(0.95, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [5m]) by (builderIsHighPrio)",
@@ -3208,7 +3208,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "quantile_over_time(0.99, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [5m]) by (builderIsHighPrio)",
@@ -3221,7 +3221,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "quantile_over_time(0.999, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [5m]) by (builderIsHighPrio)",
@@ -3269,7 +3269,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "",
       "fieldConfig": {
@@ -3352,7 +3352,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "quantile_over_time(0.5, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [1h]) by (builderIsHighPrio)",
@@ -3365,7 +3365,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "quantile_over_time(0.95, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [1h]) by (builderIsHighPrio)",
@@ -3378,7 +3378,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "quantile_over_time(0.99, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [1h]) by (builderIsHighPrio)",
@@ -3391,7 +3391,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "quantile_over_time(0.999, {namespace=\"$Namespace\", app=\"relay-api-builder\"} |= `block validation successful` | logfmt | unwrap duration [1h]) by (builderIsHighPrio)",
@@ -3439,7 +3439,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "YGOdCFc4z"
+        "uid": "OtuH-qLVk"
       },
       "description": "Only meaningful if there was a proposal in the time range and the slot is displayed, otherwise these aren't limited to proposed blocks",
       "fieldConfig": {
@@ -3518,7 +3518,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt | method = `getPayload` | msg = `execution payload delivered`",
@@ -3530,7 +3530,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "editorMode": "builder",
           "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt | msg = `block validation successful`",
@@ -3608,7 +3608,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "gridPos": {
             "h": 15,
@@ -3631,7 +3631,7 @@
             {
               "datasource": {
                 "type": "loki",
-                "uid": "YGOdCFc4z"
+                "uid": "OtuH-qLVk"
               },
               "editorMode": "builder",
               "expr": "{namespace=\"$Namespace\", app=\"relay-api-proposer\"} | logfmt",
@@ -3646,7 +3646,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "YGOdCFc4z"
+            "uid": "OtuH-qLVk"
           },
           "gridPos": {
             "h": 15,
@@ -3669,7 +3669,7 @@
             {
               "datasource": {
                 "type": "loki",
-                "uid": "YGOdCFc4z"
+                "uid": "OtuH-qLVk"
               },
               "editorMode": "builder",
               "expr": "{namespace=\"$Namespace\", app=\"relay-api-builder\"} | logfmt",

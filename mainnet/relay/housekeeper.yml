@@ -17,14 +17,15 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:905763031bfffd351c6d5779d3d7267887ebab0d3e7a309566f0144b06e349b2
+        - image: austonst/mev-boost-relay@sha256:8bf3c51e3d0756280765571772598b6e1eb29260e94b6034d006b8478cc8d44a
           name: relay-housekeeper
           args:
             - housekeeper
             - --network=mainnet
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://10.108.0.8:3500
+            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://geth-prysm-1.geth-prysm.mainnet.svc.cluster.local:3500,http://10.108.0.8:3500,http://geth-lighthouse-0.geth-lighthouse.mainnet.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.mainnet.svc.cluster.local:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
-            - --redis-uri=rediss://$(REDIS_USER):$(REDIS_PASSWORD)@$(REDIS_URI):$(REDIS_PORT)
+            - --redis-uris=$(REDIS_URIS)
+            - --redis-pw=$(REDIS_PASSWORD)
           env:
           - name: POSTGRES_USER
             valueFrom:
@@ -46,28 +47,21 @@ spec:
               secretKeyRef:
                 name: postgresql
                 key: port
-          - name: REDIS_USER
-            valueFrom:
-              secretKeyRef:
-                name: redis-default-credentials
-                key: username
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: redis-default-credentials
+                name: redis
                 key: password
-          - name: REDIS_URI
+          - name: REDIS_URIS
             valueFrom:
-              configMapKeyRef:
-                name: redis-private-connection
-                key: host
+              secretKeyRef:
+                name: redis
+                key: allnodes
           - name: REDIS_PORT
             valueFrom:
-              configMapKeyRef:
-                name: redis-private-connection
+              secretKeyRef:
+                name: redis
                 key: port
-          - name: DISABLE_SSE_PAYLOAD_ATTRIBUTES
-            value: "1"
           resources:
             requests:
               memory: "1Gi"
