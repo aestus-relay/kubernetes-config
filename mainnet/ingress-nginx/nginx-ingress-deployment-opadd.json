@@ -1,0 +1,12 @@
+[
+  {
+    "op": "add", 
+    "path": "/spec/template/spec/containers/0/args/-", 
+    "value": "--tcp-services-configmap=$(POD_NAMESPACE)/tcp-services"
+  },
+  {
+    "op": "add", 
+    "path": "/spec/template/spec/containers/0/args/-", 
+    "value": "--udp-services-configmap=$(POD_NAMESPACE)/udp-services"
+  },
+]
