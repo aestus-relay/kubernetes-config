@@ -17,7 +17,7 @@ spec:
         app: relay-website
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:1e95627d9b9d7f0f942254a01621b077fd3b9f9a308bc097f9d0a23a6012ef1e
+        - image: austonst/mev-boost-relay@sha256:776c4da287ab0d571deb77e07285bc9f78134596a89c6536a8a6bba39bbffc92
           name: relay-website
           args:
             - website
