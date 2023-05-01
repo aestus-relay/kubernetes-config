@@ -3,7 +3,7 @@
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
-helm install postgres-mainnet -n pg-mainnet --create-namespace -f values.yml bitnami/postgresql-ha
+helm install postgres-mainnet -n pg-mainnet --create-namespace -f postgres-values.yml bitnami/postgresql-ha
 
 # ------------------------------------------------------------
 # Output:
