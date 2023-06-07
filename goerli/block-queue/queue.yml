@@ -16,12 +16,12 @@ spec:
         app: block-queue
     spec:
       containers:
-      - image: flashbots/prio-load-balancer@sha256:7031a61310fb0687c072e6444776138c02126aa39fdbac932d4b96230cdd9d5b
+      - image: flashbots/prio-load-balancer@sha256:6ddd9f619451b5c47805673438b47d7522bb0188566b802f85dadd1daa45bb9f
         name: queue
         args:
           - /app/prio-load-balancer
           - --http=0.0.0.0:8080
-          - --nodes=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:8545,http://10.108.0.12:8545
+          - --nodes=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:8545,http://10.108.0.12:8545,http://geth-lighthouse-0.geth-lighthouse.goerli.svc.cluster.local:8545
           - --redis=dev
         ports:
           - containerPort: 8080

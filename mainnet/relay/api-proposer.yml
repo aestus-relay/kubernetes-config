@@ -17,14 +17,14 @@ spec:
         app: relay-api-proposer
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:7409999e294c94429a724f694703e75fad897aa3f5feca5c8c37545f187f7085
+        - image: austonst/mev-boost-relay@sha256:846b2d67663e7ffdb1e9d8eef557e2ece845988d7d2f67bc52fcd9528ccdfacd
           name: api
           args:
             - api
             - --network=mainnet
             - --listen-addr=:9062
             - --apis=proposer
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://geth-prysm-1.geth-prysm.mainnet.svc.cluster.local:3500,http://10.108.0.8:3500,http://geth-lighthouse-0.geth-lighthouse.mainnet.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.mainnet.svc.cluster.local:5052
+            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://10.108.0.8:3500,http://geth-lighthouse-0.geth-lighthouse.mainnet.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.mainnet.svc.cluster.local:5052
             - --blocksim=http://block-queue:8080
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)

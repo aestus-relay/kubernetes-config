@@ -28,7 +28,7 @@ pgpool:
   reservedConnections: 0
   numInitChildren: 100
   livenessProbe:
-    enabled: true
+    enabled: false
     initialDelaySeconds: 60
     failureThreshold: 10
     timeoutSeconds: 10

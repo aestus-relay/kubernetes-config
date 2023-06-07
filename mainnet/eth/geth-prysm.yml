@@ -10,7 +10,7 @@ spec:
       lbtype: external
   serviceName: geth-prysm
   podManagementPolicy: "Parallel"
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -67,11 +67,11 @@ spec:
               name: jwt
           resources:
             requests:
-              memory: "14Gi"
+              memory: "13Gi"
               cpu: "2000m"
             limits:
-              memory: "24Gi"
-        - image: austonst/prysm@sha256:f24c5be9e56b6f4c65fe617455cc5d672228a8d117174c96535106add0220ece
+              memory: "13Gi"
+        - image: austonst/prysm@sha256:6633714a39cab21a5cd632bda768e5607029d2d85f5ccee354a8a8dbd34c8bfb
           name: prysm
           args:
             - --mainnet
@@ -113,10 +113,10 @@ spec:
               name: jwt
           resources:
             requests:
-              memory: "5Gi"
+              memory: "12Gi"
               cpu: "2000m"
             limits:
-              memory: "9Gi"
+              memory: "12Gi"
       initContainers:
       - name: init-datadir
         image: busybox

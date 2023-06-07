@@ -16,7 +16,7 @@ spec:
         app: relay-api-builder
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:710f7e92520fe50e1003a65eec76a71b529de1b013fad75ec7cdf7ec094ef189
+        - image: austonst/mev-boost-relay@sha256:846b2d67663e7ffdb1e9d8eef557e2ece845988d7d2f67bc52fcd9528ccdfacd
           name: builder
           args:
             - api
@@ -78,6 +78,8 @@ spec:
           - name: BLOCKSIM_MAX_CONCURRENT
             value: "0"
           - name: DISABLE_PAYLOAD_DATABASE_STORAGE
+            value: "1"
+          - name: ENABLE_BUILDER_CANCELLATIONS
             value: "1"
           resources:
             requests:

@@ -22,7 +22,7 @@ spec:
         runAsUser: 0
         runAsGroup: 0
       containers:
-        - image: austonst/builder@sha256:2e77ea3a17045184fd92b9bb9892a67854eec9325a82bce240364e6318fe0ebc
+        - image: austonst/builder@sha256:e6ce70444cb02d92af1b391af7d173a994a7ae1434a62086adcd5fa3d12dbaab
           name: geth
           args:
             - --goerli
