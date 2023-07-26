@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: update_builder
+spec:
+  template:
+    metadata:
+      labels:
+        app: update_builder
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: update_builder
+        image: austonst/updateBuilder:latest
+        command: ["python", "/app/.py"]
+        args: ["--url", "http://service-name.namespace.svc.cluster.local/path/to/endpoint", "--function", "builderStatus", "--pubkey", "your_builder_public_key_here", "--high_prio", "true", "--blacklisted", "false", "--optimistic", "true", "--method", "post", "--collateral", "0", "--value" , "0"]
