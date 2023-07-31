@@ -24,7 +24,7 @@ spec:
             - --network=mainnet
             - --listen-addr=:9062
             - --apis=proposer
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://10.108.0.8:3500,http://geth-lighthouse-0.geth-lighthouse.mainnet.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.mainnet.svc.cluster.local:5052
+            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://10.108.0.8:3500,http://geth-lighthouse-0.geth-lighthouse.mainnet.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.mainnet.svc.cluster.local:5052,http://geth-lighthouse-2.geth-lighthouse.mainnet.svc.cluster.local:5052
             - --blocksim=http://block-queue:8080
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)

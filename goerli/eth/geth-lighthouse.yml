@@ -10,7 +10,7 @@ spec:
       lbtype: external
   serviceName: geth-lighthouse
   podManagementPolicy: "Parallel"
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -171,4 +171,4 @@ spec:
       storageClassName: do-block-storage
       resources:
         requests:
-          storage: 500Gi
+          storage: 600Gi

@@ -1,0 +1,33 @@
+#1. change desired pvc claim ref and namespace 
+#2. scale down relevant statefulset: "kubectl scale statefulsets geth-teku --replicas=0 -n goerli"
+#3. apply this deployment
+#4. attach and do stuff: "kubectl exec --stdin --tty eth-attach-5f7b59b46d-jl4xb -n mainnet -- /bin/sh"
+#5. delete deployment and scale replicas to 1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eth-attach
+  namespace: mainnet
+  labels:
+    app: eth-attach
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eth-attach
+  template:
+    metadata:
+      labels:
+        app: eth-attach
+    spec:
+      containers:
+      - name: attach
+        image: alpine
+        command: ["sh", "-c", "sleep infinity"]   
+        volumeMounts:
+        - name: eth-data
+          mountPath: /data
+      volumes:
+        - name: eth-data
+          persistentVolumeClaim:
+            claimName: eth-pvc-geth-lighthouse-0
