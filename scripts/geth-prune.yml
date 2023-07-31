@@ -1,5 +1,5 @@
 #1. kubectl scale --replicas=0 sts [geth-teku | geth prysm] -n mainnet
-#2. use the correct pvc
+#2. use the correct pvc and builder image
 #3. kubectl apply -f <this_script>
 #4. attach and do stuff: "kubectl exec --stdin --tty geth-teku- -n mainnet -- /bin/sh"
 #6. apk add tmux/screen and geth prune-state --data_dir = /data or do it from this script directly
@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: geth-prune
-        image: austonst/block-validation-geth@sha256:cf92a6454e50176597a90413c169d9493345ee97585cc4f08b9d25c0ee2e6665 
+        image: austonst/builder@sha256:2e77ea3a17045184fd92b9bb9892a67854eec9325a82bce240364e6318fe0ebc
         command: ["geth", "snapshot", "prune-state", "--datadir=/data/geth"]
         volumeMounts:
         - name: eth-data
@@ -31,4 +31,4 @@ spec:
       volumes:
         - name: eth-data
           persistentVolumeClaim:
-            claimName: eth-pvc-geth-prysm-0
+            claimName: eth-pvc-geth-lighthouse-2

@@ -1,34 +1,34 @@
-#relay-api-mainnet
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: relay-api-data
-  namespace: mainnet
+  name: relay-api-internal
+  namespace: goerli
   labels:
-    app: relay-api-data
+    app: relay-api-internal
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: relay-api-data
+      app: relay-api-internal
   template:
     metadata:
       labels:
-        app: relay-api-data
+        app: relay-api-internal
     spec:
       containers:
         - image: austonst/mev-boost-relay@sha256:18d429f2706db376a1ccfc85ce886b8b795702e3228d651601fa7eeb88fb1f62
-          name: api
+          name: builder
           args:
             - api
-            - --network=mainnet
+            - --network=goerli
             - --listen-addr=:9062
-            - --apis=data
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://10.108.0.8:3500,http://geth-lighthouse-0.geth-lighthouse.mainnet.svc.cluster.local:3500,http://geth-lighthouse-1.geth-lighthouse.mainnet.svc.cluster.local:5052,http://geth-lighthouse-2.geth-lighthouse.mainnet.svc.cluster.local:5052
-            - --blocksim=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:8545
+            - --apis=builder
+            - --beacon-uris=http://10.108.0.12:3500,http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:3500,http://geth-lighthouse-0.geth-lighthouse.goerli.svc.cluster.local:3500
+            - --blocksim=http://block-queue:8080
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)
+            - --memcached-uris=memcached-goerli-0.memcached-goerli.mcd-goerli.svc.cluster.local:11211,memcached-goerli-1.memcached-goerli.mcd-goerli.svc.cluster.local:11211
             - --secret-key=$(SECRET_KEY)
           ports:
             - containerPort: 9062
@@ -80,6 +80,6 @@ spec:
               memory: "250Mi"
               cpu: "250m"
             limits:
-              memory: "500Mi"
-              cpu: "500m"
+              memory: "250Mi"
+              cpu: "250m"
       restartPolicy: Always

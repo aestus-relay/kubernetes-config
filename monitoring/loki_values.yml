@@ -10,4 +10,4 @@ loki:
   persistence:
     enabled: true
     storageClassName: do-block-storage
-    size: 160Gi
+    size: 400Gi
