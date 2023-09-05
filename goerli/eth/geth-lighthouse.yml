@@ -22,7 +22,7 @@ spec:
         runAsUser: 0
         runAsGroup: 0
       containers:
-        - image: austonst/builder@sha256:e6ce70444cb02d92af1b391af7d173a994a7ae1434a62086adcd5fa3d12dbaab
+        - image: austonst/builder@sha256:be17ca0d7ac61b78c490f88d3c09363f81bfe1b9b9d0fe0c9de0ccd11a2d7493
           name: geth
           args:
             - --goerli
@@ -44,6 +44,7 @@ spec:
             - --maxpeers=100
             - --nat=extip:$(PUBLIC_IP)
             - --cache=8192
+            - --builder.validation_use_balance_diff
           env:
           - name: PUBLIC_IP
             valueFrom:
