@@ -22,9 +22,8 @@ spec:
             - api
             - --network=goerli
             - --listen-addr=:9062
-            - --apis=builder
-            - --beacon-uris=http://10.108.0.12:3500,http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:3500,http://geth-lighthouse-0.geth-lighthouse.goerli.svc.cluster.local:3500
-            - --blocksim=http://block-queue:8080
+            - --apis=internal
+            - --beacon-uris=http://geth-lighthouse-0.geth-lighthouse.goerli.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.goerli.svc.cluster.local:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)

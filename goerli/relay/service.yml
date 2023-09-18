@@ -61,3 +61,19 @@ spec:
     port: 9062
     targetPort: 9062
     protocol: TCP
+---
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: relay-api-internal
+  namespace: goerli
+spec:
+  type: ClusterIP
+  selector:
+      app: relay-api-internal
+  ports:
+  - name: api
+    port: 9062
+    targetPort: 9062
+    protocol: TCP
