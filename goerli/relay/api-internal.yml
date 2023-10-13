@@ -16,8 +16,8 @@ spec:
         app: relay-api-internal
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:18d429f2706db376a1ccfc85ce886b8b795702e3228d651601fa7eeb88fb1f62
-          name: builder
+        - image: austonst/mev-boost-relay@sha256:6b2e206a5985c19a74a59414cba76e2722356ee24f7d2c605daa8994d76c65af
+          name: internal
           args:
             - api
             - --network=goerli

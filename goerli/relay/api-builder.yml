@@ -6,7 +6,7 @@ metadata:
   labels:
     app: relay-api-builder
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: relay-api-builder
@@ -16,7 +16,7 @@ spec:
         app: relay-api-builder
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:18d429f2706db376a1ccfc85ce886b8b795702e3228d651601fa7eeb88fb1f62
+        - image: austonst/mev-boost-relay@sha256:0f39f9374031cda1328972628115ca98cf0d58da5874703ae76ab67bffb155c5
           name: builder
           args:
             - api

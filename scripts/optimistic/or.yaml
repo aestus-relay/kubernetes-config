@@ -1,16 +1,16 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: update_builder
+  name: update-builder
 spec:
   template:
     metadata:
       labels:
-        app: update_builder
+        app: update-builder
     spec:
       restartPolicy: Never
       containers:
       - name: update_builder
-        image: austonst/updateBuilder:latest
+        image: austonst/update-builder:latest
         command: ["python", "/app/.py"]
-        args: ["--url", "http://service-name.namespace.svc.cluster.local/path/to/endpoint", "--function", "builderStatus", "--pubkey", "your_builder_public_key_here", "--high_prio", "true", "--blacklisted", "false", "--optimistic", "true", "--method", "post", "--collateral", "0", "--value" , "0"]
+        args: ["--url", "http://relay-api-internal.goerli.svc.cluster.local/path/to/endpoint", "--function", "builderStatus", "--pubkey", "your_builder_public_key_here", "--high_prio", "true", "--blacklisted", "false", "--optimistic", "true", "--method", "post", "--collateral", "0", "--value" , "0"]

@@ -6,28 +6,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eth-attach
+  name: pvc-attach
   namespace: mainnet
   labels:
-    app: eth-attach
+    app: pvc-attach
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: eth-attach
+      app: pvc-attach
   template:
     metadata:
       labels:
-        app: eth-attach
+        app: pvc-attach
     spec:
       containers:
       - name: attach
-        image: busybox 
+        image: alpine
         command: ["sh", "-c", "sleep infinity"]   
         volumeMounts:
-        - name: eth-data
-          mountPath: /data
+        - name: pvc-data-1
+          mountPath: /data1
+        - name: pvc-data-2
+          mountPath: /data2
       volumes:
-        - name: eth-data
+        - name: pvc-data-1
           persistentVolumeClaim:
-            claimName: eth-pvc-geth-teku-0
+            claimName: eth-pvc-geth-prysm-0
+        - name: pvc-data-2
+          persistentVolumeClaim:
+            claimName: eth-pvc-geth-lighthouse-0
