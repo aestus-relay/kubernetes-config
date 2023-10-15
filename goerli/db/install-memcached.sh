@@ -3,16 +3,16 @@
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
-helm install memcached-goerli -n mcd-goerli --create-namespace -f memcached-values.yml bitnami/memcached
+helm install memcached -n mcd --create-namespace -f memcached-values.yml bitnami/memcached
 
 # Instances are accessible on these FQDNs:
-# memcached-goerli-0.memcached-goerli.mcd-goerli.svc.cluster.local:11211
-# memcached-goerli-1.memcached-goerli.mcd-goerli.svc.cluster.local:11211
+# memcached-0.memcached.mcd.svc.cluster.local:11211
+# memcached-1.memcached.mcd.svc.cluster.local:11211
 # etc.
 
 # To access the Memcached instance from outside the cluster execute:
-# kubectl run telnet --rm --image=mikesplain/telnet --stdin --tty -n goerli --command -- /bin/sh
-# telnet memcached-goerli-0.memcached-goerli.mcd-goerli.svc.cluster.local 11211
+# kubectl run telnet --rm --image=mikesplain/telnet --stdin --tty -n relay --command -- /bin/sh
+# telnet memcached-0.goerli.mcd.svc.cluster.local 11211
 
 # Note:
 # Without using mcrouter, data is not replicated between nodes
