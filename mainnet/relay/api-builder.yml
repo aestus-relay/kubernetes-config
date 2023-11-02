@@ -3,11 +3,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: relay-api-builder
-  namespace: mainnet
+  namespace: relay
   labels:
     app: relay-api-builder
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: relay-api-builder
@@ -17,19 +17,19 @@ spec:
         app: relay-api-builder
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:18d429f2706db376a1ccfc85ce886b8b795702e3228d651601fa7eeb88fb1f62
+        - image: austonst/mev-boost-relay@sha256:0f39f9374031cda1328972628115ca98cf0d58da5874703ae76ab67bffb155c5
           name: api
           args:
             - api
             - --network=mainnet
             - --listen-addr=:9062
             - --apis=builder
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://10.108.0.8:3500,http://geth-lighthouse-0.geth-lighthouse.mainnet.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.mainnet.svc.cluster.local:5052,http://geth-lighthouse-2.geth-lighthouse.mainnet.svc.cluster.local:5052
+            - --beacon-uris=http://int.a.mainnet.aestus.live:5052,http://int.b.mainnet.aestus.live:5052,http://int.c.mainnet.aestus.live:5052
             - --blocksim=http://block-queue:8080
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)
-            - --memcached-uris=memcached-mainnet-0.memcached-mainnet.mcd-mainnet.svc.cluster.local:11211,memcached-mainnet-1.memcached-mainnet.mcd-mainnet.svc.cluster.local:11211
+            - --memcached-uris=memcached-0.memcached.mcd.svc.cluster.local:11211,memcached-1.memcached.mcd.svc.cluster.local:11211
             - --secret-key=$(SECRET_KEY)
           ports:
             - containerPort: 9062
@@ -84,8 +84,8 @@ spec:
             value: "1"
           resources:
             requests:
-              memory: "1000Mi"
-              cpu: "1000m"
+              memory: "2Gi"
+              cpu: "1500m"
             limits:
               memory: "2Gi"
       restartPolicy: Always

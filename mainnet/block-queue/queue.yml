@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: block-queue
-  namespace: mainnet
+  namespace: relay
   labels:
     app: block-queue
 spec:
@@ -22,7 +22,7 @@ spec:
         args:
           - /app/prio-load-balancer
           - --http=0.0.0.0:8080
-          - --nodes=http://geth-lighthouse-0.geth-lighthouse.mainnet.svc.cluster.local:8545,http://geth-lighthouse-1.geth-lighthouse.mainnet.svc.cluster.local:8545,http://geth-lighthouse-2.geth-lighthouse.mainnet.svc.cluster.local:8545
+          - --nodes=http://int.a.mainnet.aestus.live:8545,http://int.b.mainnet.aestus.live:8545
           - --redis=dev
         ports:
           - containerPort: 8080
@@ -30,9 +30,8 @@ spec:
             name: api
         resources:
           requests:
-            memory: "250Mi"
-            cpu: "500m"
-          limits:
             memory: "500Mi"
             cpu: "1000m"
+          limits:
+            memory: "500Mi"
       restartPolicy: Always

@@ -11,9 +11,11 @@ resources:
   requests:
     memory: 1Gi
     cpu: "250m"
+  limits:
+    memory: 1Gi
 
 persistence:
   enabled: true
-  storageClass: do-block-storage
+  storageClass: csi-cinder-high-speed
   accessMode: ReadWriteOnce
   size: 8Gi

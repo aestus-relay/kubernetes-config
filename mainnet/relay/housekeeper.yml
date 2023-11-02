@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: relay-housekeeper
-  namespace: mainnet
+  namespace: relay
   labels:
     app: relay-housekeeper
 spec:
@@ -17,12 +17,12 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:18d429f2706db376a1ccfc85ce886b8b795702e3228d651601fa7eeb88fb1f62
+        - image: austonst/mev-boost-relay@sha256:6b2e206a5985c19a74a59414cba76e2722356ee24f7d2c605daa8994d76c65af
           name: relay-housekeeper
           args:
             - housekeeper
             - --network=mainnet
-            - --beacon-uris=http://geth-prysm-0.geth-prysm.mainnet.svc.cluster.local:3500,http://10.108.0.8:3500,http://geth-lighthouse-0.geth-lighthouse.mainnet.svc.cluster.local:5052,,http://geth-lighthouse-1.geth-lighthouse.mainnet.svc.cluster.local:5052
+            - --beacon-uris=http://int.a.mainnet.aestus.live:5052,http://int.b.mainnet.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)
@@ -64,10 +64,9 @@ spec:
                 key: port
           resources:
             requests:
-              memory: "1Gi"
-              cpu: "1000m"
-            limits:
               memory: "2Gi"
               cpu: "2000m"
+            limits:
+              memory: "2Gi"
       restartPolicy: Always
       terminationGracePeriodSeconds: 600

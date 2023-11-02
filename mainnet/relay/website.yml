@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: relay-website
-  namespace: mainnet
+  namespace: relay
   labels:
     app: relay-website
 spec:
@@ -69,8 +69,8 @@ spec:
                 key: port
           resources:
             requests:
-              memory: "1Gi"
-              cpu: "300m"
+              memory: "2Gi"
+              cpu: "500m"
             limits:
               memory: "2Gi"
       restartPolicy: Always

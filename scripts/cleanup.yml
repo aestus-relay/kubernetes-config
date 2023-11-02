@@ -5,15 +5,12 @@ metadata:
   name: cleanup
 spec:
   containers:
-  - image: austonst/cron-backup-postgres:latest
+  - image: postgres
     command:
       - "sleep"
       - "86400"
     imagePullPolicy: IfNotPresent
     name: cleanup
-    volumeMounts:
-    - mountPath: /backup
-      name: backup
     env:
     - name: POSTGRES_USER
       valueFrom:
@@ -37,7 +34,3 @@ spec:
           key: port
 
   restartPolicy: Always
-  volumes:
-  - name: backup
-    persistentVolumeClaim:
-      claimName: backup-pvc

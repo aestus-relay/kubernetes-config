@@ -7,7 +7,7 @@ tls:
 
 persistence:
   enabled: true
-  storageClass: do-block-storage
+  storageClass: csi-cinder-high-speed
   accessMode: ReadWriteOnce
   size: "2500Mi"
 
@@ -15,7 +15,9 @@ redis:
   resources:
     requests:
       memory: "2Gi"
-      cpu: "500m"
+      cpu: "1000m"
+    limits:
+      memory: "2Gi"
 
 metrics:
   enabled: true

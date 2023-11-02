@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: letsencrypt-production
-  namespace: mainnet
+  namespace: relay
 spec:
   acme:
     # The ACME server URL

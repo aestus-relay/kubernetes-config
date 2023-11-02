@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: relay-website
-  namespace: goerli
+  namespace: relay
   labels:
     app: relay-website
 spec:
@@ -71,8 +71,7 @@ spec:
           resources:
             requests:
               memory: "1Gi"
-              cpu: "200m"
-            limits:
-              memory: "2Gi"
               cpu: "500m"
+            limits:
+              memory: "1Gi"
       restartPolicy: Always

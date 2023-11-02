@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: relay-api-builder
-  namespace: goerli
+  namespace: relay
   labels:
     app: relay-api-builder
 spec:
@@ -23,12 +23,12 @@ spec:
             - --network=goerli
             - --listen-addr=:9062
             - --apis=builder
-            - --beacon-uris=http://geth-lighthouse-0.geth-lighthouse.goerli.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.goerli.svc.cluster.local:5052
+            - --beacon-uris=http://int.a.goerli.aestus.live:5052,http://int.b.goerli.aestus.live:5052
             - --blocksim=http://block-queue:8080
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)
-            - --memcached-uris=memcached-goerli-0.memcached-goerli.mcd-goerli.svc.cluster.local:11211,memcached-goerli-1.memcached-goerli.mcd-goerli.svc.cluster.local:11211
+            - --memcached-uris=memcached-0.memcached.mcd.svc.cluster.local:11211,memcached-1.memcached.mcd.svc.cluster.local:11211
             - --secret-key=$(SECRET_KEY)
           ports:
             - containerPort: 9062
@@ -83,9 +83,8 @@ spec:
             value: "1"
           resources:
             requests:
-              memory: "250Mi"
-              cpu: "250m"
-            limits:
               memory: "500Mi"
               cpu: "500m"
+            limits:
+              memory: "500Mi"
       restartPolicy: Always

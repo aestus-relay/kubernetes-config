@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: block-queue
-  namespace: goerli
+  namespace: relay
   labels:
     app: block-queue
 spec:
@@ -21,7 +21,7 @@ spec:
         args:
           - /app/prio-load-balancer
           - --http=0.0.0.0:8080
-          - --nodes=http://geth-lighthouse-0.geth-lighthouse.goerli.svc.cluster.local:8545,http://geth-lighthouse-1.geth-lighthouse.goerli.svc.cluster.local:8545
+          - --nodes=http://int.a.goerli.aestus.live:8545,http://int.b.goerli.aestus.live:8545
           - --redis=dev
         ports:
           - containerPort: 8080
@@ -29,9 +29,8 @@ spec:
             name: api
         resources:
           requests:
-            memory: "250Mi"
+            memory: "500Mi"
             cpu: "500m"
           limits:
             memory: "500Mi"
-            cpu: "1000m"
       restartPolicy: Always

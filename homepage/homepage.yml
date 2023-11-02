@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homepage
-  namespace: mainnet
+  namespace: relay
   labels:
    app: homepage
 spec:
@@ -27,6 +27,5 @@ spec:
               memory: "500Mi"
               cpu: "250m"
             limits:
-              memory: "1Gi"
-              cpu: "500m"
+              memory: "500Mi"
       restartPolicy: Always

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: relay-api-data
-  namespace: goerli
+  namespace: relay
   labels:
     app: relay-api-data
 spec:
@@ -23,8 +23,7 @@ spec:
             - --network=goerli
             - --listen-addr=:9062
             - --apis=data
-            - --beacon-uris=http://geth-lighthouse-0.geth-lighthouse.goerli.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.goerli.svc.cluster.local:5052
-            - --blocksim=http://geth-prysm-0.geth-prysm.goerli.svc.cluster.local:8545
+            - --beacon-uris=http://int.a.goerli.aestus.live:5052,http://int.b.goerli.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)
@@ -76,9 +75,8 @@ spec:
                 key: private
           resources:
             requests:
-              memory: "250Mi"
-              cpu: "125m"
-            limits:
               memory: "500Mi"
               cpu: "250m"
+            limits:
+              memory: "500Mi"
       restartPolicy: Always

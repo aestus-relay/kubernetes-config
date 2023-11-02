@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: relay-housekeeper
-  namespace: goerli
+  namespace: relay
   labels:
     app: relay-housekeeper
 spec:
@@ -21,7 +21,7 @@ spec:
           args:
             - housekeeper
             - --network=goerli
-            - --beacon-uris=http://geth-lighthouse-0.geth-lighthouse.goerli.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.goerli.svc.cluster.local:5052
+            - --beacon-uris=http://int.a.goerli.aestus.live:5052,http://int.b.goerli.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)
@@ -63,10 +63,9 @@ spec:
                 key: port
           resources:
             requests:
-              memory: "500Mi"
-              cpu: "1000m"
-            limits:
               memory: "1300Mi"
               cpu: "2000m"
+            limits:
+              memory: "1300Mi"
       restartPolicy: Always
       terminationGracePeriodSeconds: 600

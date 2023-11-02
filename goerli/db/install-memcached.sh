@@ -12,7 +12,7 @@ helm install memcached -n mcd --create-namespace -f memcached-values.yml bitnami
 
 # To access the Memcached instance from outside the cluster execute:
 # kubectl run telnet --rm --image=mikesplain/telnet --stdin --tty -n relay --command -- /bin/sh
-# telnet memcached-0.goerli.mcd.svc.cluster.local 11211
+# telnet memcached-0.memcached.mcd.svc.cluster.local 11211
 
 # Note:
 # Without using mcrouter, data is not replicated between nodes

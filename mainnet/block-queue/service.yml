@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: block-queue
-  namespace: mainnet
+  namespace: relay
 spec:
   type: ClusterIP
   selector:
