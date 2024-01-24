@@ -22,7 +22,7 @@ spec:
         args:
           - /app/prio-load-balancer
           - --http=0.0.0.0:8080
-          - --nodes=http://int.a.mainnet.aestus.live:8545,http://int.b.mainnet.aestus.live:8545
+          - --nodes=http://int.a.mainnet.aestus.live:8545,http://int.b.mainnet.aestus.live:8545,http://int.c.mainnet.aestus.live:8545
           - --redis=dev
         ports:
           - containerPort: 8080
@@ -30,8 +30,8 @@ spec:
             name: api
         resources:
           requests:
-            memory: "500Mi"
+            memory: "1Gi"
             cpu: "1000m"
           limits:
-            memory: "500Mi"
+            memory: "1Gi"
       restartPolicy: Always
