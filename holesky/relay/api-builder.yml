@@ -1,32 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: relay-api-data
+  name: relay-api-builder
   namespace: relay
   labels:
-    app: relay-api-data
+    app: relay-api-builder
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: relay-api-data
+      app: relay-api-builder
   template:
     metadata:
       labels:
-        app: relay-api-data
+        app: relay-api-builder
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:3ab64cf5886a6608e7965849dc719d5ecf557625092463490bd8787432defbec
-          name: data
+        - image: austonst/mev-boost-relay@sha256:b71cd5a23c54d929f82180f5996e9a618be647622b5c8fbea3e0859603889f11
+          name: builder
           args:
             - api
-            - --network=goerli
+            - --network=holesky
             - --listen-addr=:9062
-            - --apis=data
-            - --beacon-uris=http://int.a.goerli.aestus.live:5052,http://int.b.goerli.aestus.live:5052
+            - --apis=builder
+            - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
+            - --blocksim=http://block-queue:8080
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)
+            - --memcached-uris=memcached-0.memcached.mcd.svc.cluster.local:11211,memcached-1.memcached.mcd.svc.cluster.local:11211
             - --secret-key=$(SECRET_KEY)
           ports:
             - containerPort: 9062
@@ -73,10 +75,16 @@ spec:
               secretKeyRef:
                 name: relay-key
                 key: private
+          - name: BLOCKSIM_MAX_CONCURRENT
+            value: "0"
+          - name: DISABLE_PAYLOAD_DATABASE_STORAGE
+            value: "1"
+          - name: ENABLE_BUILDER_CANCELLATIONS
+            value: "1"
           resources:
             requests:
               memory: "500Mi"
-              cpu: "250m"
+              cpu: "500m"
             limits:
               memory: "500Mi"
       restartPolicy: Always

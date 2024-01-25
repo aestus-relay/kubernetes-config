@@ -1,37 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: relay-website
+  name: relay-api-proposer
   namespace: relay
   labels:
-    app: relay-website
+    app: relay-api-proposer
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: relay-website
+      app: relay-api-proposer
   template:
     metadata:
       labels:
-        app: relay-website
+        app: relay-api-proposer
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:3ab64cf5886a6608e7965849dc719d5ecf557625092463490bd8787432defbec
-          name: relay-website
+        - image: austonst/mev-boost-relay@sha256:b71cd5a23c54d929f82180f5996e9a618be647622b5c8fbea3e0859603889f11
+          name: proposer
           args:
-            - website
-            - --network=goerli
-            - --listen-addr=:9060
+            - api
+            - --network=holesky
+            - --listen-addr=:9062
+            - --apis=proposer
+            - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)
-            - --relay-url=https://0xab78bf8c781c58078c3beb5710c57940874dd96aef2835e7742c866b4c7c0406754376c2c8285a36c630346aa5c5f833@goerli.aestus.live
-            - --link-beaconchain=https://goerli.beaconcha.in
-            - --link-etherscan=https://goerli.etherscan.io
+            - --memcached-uris=memcached-0.memcached.mcd.svc.cluster.local:11211,memcached-1.memcached.mcd.svc.cluster.local:11211
+            - --secret-key=$(SECRET_KEY)
           ports:
-            - containerPort: 9060
+            - containerPort: 9062
               protocol: TCP
-              name: web
+              name: api
           env:
           - name: POSTGRES_USER
             valueFrom:
@@ -68,10 +69,19 @@ spec:
               secretKeyRef:
                 name: redis
                 key: port
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: relay-key
+                key: private
+          - name: BLOCKSIM_MAX_CONCURRENT
+            value: "0"
+          - name: GETPAYLOAD_REQUEST_CUTOFF_MS
+            value: "4000"
           resources:
             requests:
-              memory: "1Gi"
-              cpu: "500m"
+              memory: "2000Mi"
+              cpu: "1000m"
             limits:
-              memory: "1Gi"
+              memory: "2000Mi"
       restartPolicy: Always

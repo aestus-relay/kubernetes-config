@@ -1,38 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: relay-api-internal
-  namespace: goerli
+  name: relay-housekeeper
+  namespace: relay
   labels:
-    app: relay-api-internal
+    app: relay-housekeeper
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: relay-api-internal
+      app: relay-housekeeper
   template:
     metadata:
       labels:
-        app: relay-api-internal
+        app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:6b2e206a5985c19a74a59414cba76e2722356ee24f7d2c605daa8994d76c65af
-          name: internal
+        - image: austonst/mev-boost-relay@sha256:b71cd5a23c54d929f82180f5996e9a618be647622b5c8fbea3e0859603889f11
+          name: relay-housekeeper
           args:
-            - api
-            - --network=goerli
-            - --listen-addr=:9062
-            - --apis=internal
-            - --beacon-uris=http://geth-lighthouse-0.geth-lighthouse.goerli.svc.cluster.local:5052,http://geth-lighthouse-1.geth-lighthouse.goerli.svc.cluster.local:5052
+            - housekeeper
+            - --network=holesky
+            - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)
-            - --memcached-uris=memcached-goerli-0.memcached-goerli.mcd-goerli.svc.cluster.local:11211,memcached-goerli-1.memcached-goerli.mcd-goerli.svc.cluster.local:11211
-            - --secret-key=$(SECRET_KEY)
-          ports:
-            - containerPort: 9062
-              protocol: TCP
-              name: api
           env:
           - name: POSTGRES_USER
             valueFrom:
@@ -69,16 +61,11 @@ spec:
               secretKeyRef:
                 name: redis
                 key: port
-          - name: SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: relay-key
-                key: private
           resources:
             requests:
-              memory: "250Mi"
-              cpu: "250m"
+              memory: "1300Mi"
+              cpu: "2000m"
             limits:
-              memory: "250Mi"
-              cpu: "250m"
+              memory: "1300Mi"
       restartPolicy: Always
+      terminationGracePeriodSeconds: 600
