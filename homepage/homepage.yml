@@ -16,7 +16,7 @@ spec:
         app: homepage
     spec:
       containers:
-        - image: austonst/aestus-homepage@sha256:44a62d3e98d8bb61c374aad72d5d6b84d9865fc32915b33ac5bff1001cc13b20
+        - image: maxbirge/relay-homepage@sha256:cd30f40b959a858decd18786690c1f5c3562a140c8268d66e8760cd2a5212460
           name: homepage
           ports:
             - containerPort: 80
