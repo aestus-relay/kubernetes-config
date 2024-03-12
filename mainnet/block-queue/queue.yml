@@ -22,7 +22,7 @@ spec:
         args:
           - /app/prio-load-balancer
           - --http=0.0.0.0:8080
-          - --nodes=http://int.a.mainnet.aestus.live:8545,http://int.b.mainnet.aestus.live:8545,http://int.c.mainnet.aestus.live:8545
+          - --nodes=http://int.a.mainnet.aestus.live:8545,http://int.b.mainnet.aestus.live:8545,http://int.c.mainnet.aestus.live:8545,http://int.d.mainnet.aestus.live:8545?_workers=100
           - --redis=dev
         ports:
           - containerPort: 8080

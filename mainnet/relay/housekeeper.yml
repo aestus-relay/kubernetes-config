@@ -17,12 +17,12 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:6b2e206a5985c19a74a59414cba76e2722356ee24f7d2c605daa8994d76c65af
+        - image: austonst/mev-boost-relay@sha256:a4654db8e6f592b9480ea033558a01e11bd84f57ad93cd6fe5148a519709f778
           name: relay-housekeeper
           args:
             - housekeeper
             - --network=mainnet
-            - --beacon-uris=http://int.a.mainnet.aestus.live:5052,http://int.b.mainnet.aestus.live:5052
+            - --beacon-uris=http://int.a.mainnet.aestus.live:5052,http://int.b.mainnet.aestus.live:5052,http://int.c.mainnet.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uris=$(REDIS_URIS)
             - --redis-pw=$(REDIS_PASSWORD)

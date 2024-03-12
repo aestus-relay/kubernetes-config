@@ -16,7 +16,7 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:7bd5e01caecbf2fbc1e9e6ba179ada535404e368742024d7752b0ae4b6171b39
+        - image: austonst/mev-boost-relay@sha256:a4654db8e6f592b9480ea033558a01e11bd84f57ad93cd6fe5148a519709f778
           name: relay-housekeeper
           args:
             - housekeeper
