@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Aestus Header Timing Test</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      #log { height: 200px; overflow-y: scroll; padding: 10px; }
+      #stats { margin-top: 20px; }
+    </style>
+  </head>
+  <body>
+
+    <h1>Aestus Header Timing Test</h1>
+    
+    <input type="text" id="apiEndpoint" value="https://aestus.live/eth/v1/builder/status?headerDelay=300&headerLimit=1500" style="width: 100%; margin-bottom: 10px;">
+    Timeout (ms): <input type="text" id="timeLimit" value="950" style="width: 10%; margin-bottom: 10px;"><br />
+    <button id="startStopBtn">Start</button>
+    <button id="resetBtn" style="margin-left: 10px;">Reset</button>
+    <div id="log" style="margin-top: 10px;"></div>
+    <div id="stats"></div>
+    
+    <script>
+      (function() {
+        let isRunning = false;
+        let intervalId;
+        let durations = [];
+        let count = 0;
+        let sum = 0;
+        let min = Infinity;
+        let max = -Infinity;
+        let lastApiEndpointValue = ''
+
+        const apiEndpointInput = document.getElementById('apiEndpoint');
+        const timeLimitInput = document.getElementById('timeLimit');
+        const logElement = document.getElementById('log');
+        const statsElement = document.getElementById('stats');
+        const startStopButton = document.getElementById('startStopBtn');
+        const resetButton = document.getElementById('resetBtn');
+        
+        startStopButton.addEventListener('click', function() {
+          if (isRunning) {
+            clearInterval(intervalId);
+            startStopButton.textContent = 'Start';
+            isRunning = false;
+            calcAndDisplayExtraStats();
+            apiEndpointInput.disabled = false;
+            timeLimitInput.disabled = false;
+          } else {
+            // If the endpoint has changed, reset to avoid mixed values
+            if (lastApiEndpointValue !== apiEndpointInput.value) {
+              reset();
+            }
+            lastApiEndpointValue = apiEndpointInput.value;
+            startStopButton.textContent = 'Stop';
+            isRunning = true;
+            apiEndpointInput.disabled = true;
+            timeLimitInput.disabled = true;
+            
+            intervalId = setInterval(makeApiCall, 250);
+          }
+        });
+
+        function reset() {
+          durations = [];
+          count = 0;
+          sum = 0;
+          min = Infinity;
+          max = -Infinity;
+          logElement.innerHTML = '';
+          statsElement.innerHTML = '';
+        }
+        
+        resetButton.addEventListener('click', function() {
+          reset();
+          isRunning = false;
+          startStopButton.textContent = 'Start';
+        });
+        
+        function makeApiCall() {
+          const startTime = performance.now();
+          const apiEndpoint = apiEndpointInput.value;
+          fetch(apiEndpoint, {
+            cache: "no-store",
+            mode: "no-cors",
+          })
+            .then(response => {
+              const duration = performance.now() - startTime;
+              logDuration(duration);
+              updateStats(duration); // Update real-time stats
+              durations.push(duration);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
+        function logDuration(duration) {
+          const message = `${duration} ms`;
+          const div = document.createElement('div');
+          div.textContent = message;
+          logElement.appendChild(div);
+          logElement.scrollTop = logElement.scrollHeight;
+        }
+        
+        function updateStats(duration) {
+          count++;
+          sum += duration;
+          min = Math.min(min, duration);
+          max = Math.max(max, duration);
+          
+          const avg = sum / count;
+          statsElement.innerHTML = `
+      <div>Mean Duration: ${avg.toFixed(2)} ms</div>
+      <div>Minimum Duration: ${min} ms</div>
+      <div>Maximum Duration: ${max} ms</div>
+    `;
+          if (!isRunning) {
+            calcAndDisplayExtraStats();
+          }
+        }
+
+        function calculateSuccessRate(sortedDurations) {
+          let low = 0;
+          let high = sortedDurations.length - 1;
+          let threshold = timeLimitInput.value
+          
+          while (low <= high) {
+            let mid = Math.floor((low + high) / 2);
+            if (sortedDurations[mid] < threshold) {
+              low = mid + 1;
+            } else {
+              high = mid - 1;
+            }
+          }
+          return (low / sortedDurations.length) * 100;
+        }
+        
+        function calcAndDisplayExtraStats() {
+          if (durations.length === 0) {
+            return;
+          }
+          const sortedDurations = durations.slice().sort((a, b) => a - b);
+          const p95 = percentile(sortedDurations, 95);
+          const p99 = percentile(sortedDurations, 99);
+          const p99_9 = percentile(sortedDurations, 99.9);
+          const success = calculateSuccessRate(sortedDurations)
+          statsElement.innerHTML += `
+      <div>p95 Duration: ${p95.toFixed(2)} ms</div>
+      <div>p99 Duration: ${p99.toFixed(2)} ms</div>
+      <div>p99.9 Duration: ${p99_9.toFixed(2)} ms</div>
+      <div>Success rate (below ${timeLimitInput.value} ms): ${success.toFixed(2)}%</div>
+    `;
+        }
+        
+        // Calculate the percentile value
+        function percentile(sortedDurations, p) {
+          const index = Math.ceil(p / 100.0 * sortedDurations.length) - 1;
+          return sortedDurations[index];
+        }
+      })();
+      </script>
+    
+  </body>
+</html>
