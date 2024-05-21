@@ -16,15 +16,14 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:a4654db8e6f592b9480ea033558a01e11bd84f57ad93cd6fe5148a519709f778
+        - image: austonst/mev-boost-relay@sha256:96ddf01193d058495065cf21a463f11e76880c2ac6f2ef8a67ea7a8b9f2019c8
           name: relay-housekeeper
           args:
             - housekeeper
             - --network=holesky
             - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
-            - --redis-uris=$(REDIS_URIS)
-            - --redis-pw=$(REDIS_PASSWORD)
+            - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
           env:
           - name: POSTGRES_USER
             valueFrom:
@@ -51,11 +50,11 @@ spec:
               secretKeyRef:
                 name: redis
                 key: password
-          - name: REDIS_URIS
+          - name: REDIS_HOST
             valueFrom:
               secretKeyRef:
                 name: redis
-                key: allnodes
+                key: host
           - name: REDIS_PORT
             valueFrom:
               secretKeyRef:

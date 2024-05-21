@@ -1,23 +1,43 @@
-usePassword: true
-existingSecret: redis
-existingSecretPasswordKey: password
+auth:
+  enabled: true
+  existingSecret: redis
+  existingSecretPasswordKey: password
 
 tls:
   enabled: false
 
-persistence:
-  enabled: true
-  storageClass: csi-cinder-high-speed
-  accessMode: ReadWriteOnce
-  size: "2500Mi"
-
-redis:
+master:
+  persistence:
+    enabled: true
+    storageClass: csi-cinder-high-speed
+    accessMode: ReadWriteOnce
+    size: "2500Mi"
   resources:
     requests:
-      memory: "2Gi"
-      cpu: "1000m"
+      memory: "2000Mi"
+      cpu: "3000m"
     limits:
-      memory: "2Gi"
+      memory: "2000Mi"
+
+replica:
+  replicaCount: 2
+  persistence:
+    enabled: true
+    storageClass: csi-cinder-high-speed
+    accessMode: ReadWriteOnce
+    size: "2500Mi"
+  resources:
+    requests:
+      memory: "2000Mi"
+      cpu: "1500m"
+    limits:
+      memory: "2000Mi"
 
 metrics:
   enabled: true
+  resources:
+    requests:
+      memory: "50Mi"
+      cpu: "50m"
+    limits:
+      memory: "50Mi"

@@ -16,7 +16,7 @@ spec:
         app: block-queue
     spec:
       containers:
-      - image: flashbots/prio-load-balancer@sha256:6ddd9f619451b5c47805673438b47d7522bb0188566b802f85dadd1daa45bb9f
+      - image: flashbots/prio-load-balancer@sha256:346b7e2050e9a0db9748e5baffe0b1137bf32ab9680c7b45d47204b5b5cbde04
         name: queue
         args:
           - /app/prio-load-balancer

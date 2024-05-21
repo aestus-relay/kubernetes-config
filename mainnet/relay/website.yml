@@ -17,15 +17,15 @@ spec:
         app: relay-website
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:a4654db8e6f592b9480ea033558a01e11bd84f57ad93cd6fe5148a519709f778
+        - image: austonst/mev-boost-relay@sha256:96ddf01193d058495065cf21a463f11e76880c2ac6f2ef8a67ea7a8b9f2019c8
           name: relay-website
           args:
             - website
             - --network=mainnet
             - --listen-addr=:9060
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
-            - --redis-uris=$(REDIS_URIS)
-            - --redis-pw=$(REDIS_PASSWORD)
+            - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
+            - --redis-readonly-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST_RO):$(REDIS_PORT)
             - --relay-url=https://0xa15b52576bcbf1072f4a011c0f99f9fb6c66f3e1ff321f11f461d15e31b1cb359caa092c71bbded0bae5b5ea401aab7e@aestus.live
           ports:
             - containerPort: 9060
@@ -57,11 +57,16 @@ spec:
               secretKeyRef:
                 name: redis
                 key: password
-          - name: REDIS_URIS
+          - name: REDIS_HOST
             valueFrom:
               secretKeyRef:
                 name: redis
-                key: allnodes
+                key: host
+          - name: REDIS_HOST_RO
+            valueFrom:
+              secretKeyRef:
+                name: redis
+                key: host_ro
           - name: REDIS_PORT
             valueFrom:
               secretKeyRef:

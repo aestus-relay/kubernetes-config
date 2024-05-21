@@ -16,7 +16,7 @@ spec:
         app: relay-api-builder
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:a4654db8e6f592b9480ea033558a01e11bd84f57ad93cd6fe5148a519709f778
+        - image: austonst/mev-boost-relay@sha256:62d4a66a09891643b301e4b97153fad7efd7dcf4cd7344947c5989065aa12101
           name: builder
           args:
             - api
@@ -26,8 +26,8 @@ spec:
             - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
             - --blocksim=http://block-queue:8080
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
-            - --redis-uris=$(REDIS_URIS)
-            - --redis-pw=$(REDIS_PASSWORD)
+            - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
+            - --redis-readonly-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST_RO):$(REDIS_PORT)
             - --memcached-uris=memcached-0.memcached.mcd.svc.cluster.local:11211,memcached-1.memcached.mcd.svc.cluster.local:11211
             - --secret-key=$(SECRET_KEY)
           ports:
@@ -60,11 +60,16 @@ spec:
               secretKeyRef:
                 name: redis
                 key: password
-          - name: REDIS_URIS
+          - name: REDIS_HOST
             valueFrom:
               secretKeyRef:
                 name: redis
-                key: allnodes
+                key: host
+          - name: REDIS_HOST_RO
+            valueFrom:
+              secretKeyRef:
+                name: redis
+                key: host_ro
           - name: REDIS_PORT
             valueFrom:
               secretKeyRef:
