@@ -11,27 +11,27 @@ master:
     enabled: true
     storageClass: csi-cinder-high-speed
     accessMode: ReadWriteOnce
-    size: "7000Mi"
+    size: "700Mi"
   resources:
     requests:
-      memory: "6000Mi"
-      cpu: "2000m"
+      memory: "500Mi"
+      cpu: "1100m"
     limits:
-      memory: "6000Mi"
+      memory: "500Mi"
 
 replica:
-  replicaCount: 2
+  replicaCount: 1
   persistence:
     enabled: true
     storageClass: csi-cinder-high-speed
     accessMode: ReadWriteOnce
-    size: "7000Mi"
+    size: "700Mi"
   resources:
     requests:
-      memory: "6000Mi"
-      cpu: "2000m"
+      memory: "500Mi"
+      cpu: "1100m"
     limits:
-      memory: "6000Mi"
+      memory: "500Mi"
 
 metrics:
   enabled: true

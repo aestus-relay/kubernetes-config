@@ -16,7 +16,7 @@ spec:
         app: relay-api-builder
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:62d4a66a09891643b301e4b97153fad7efd7dcf4cd7344947c5989065aa12101
+        - image: austonst/mev-boost-relay@sha256:9620f49a587393ccb66c5dea625ad438d93a7aadb7a9ba165df3ae1fc065b06c
           name: builder
           args:
             - api
@@ -28,6 +28,8 @@ spec:
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
             - --redis-readonly-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST_RO):$(REDIS_PORT)
+            - --bidengine-uri=redis://:$(REDIS_PASSWORD)@$(BIDENGINE_HOST):$(REDIS_PORT)
+            - --bidengine-ro-uri=redis://:$(REDIS_PASSWORD)@$(BIDENGINE_HOST_RO):$(REDIS_PORT)
             - --memcached-uris=memcached-0.memcached.mcd.svc.cluster.local:11211,memcached-1.memcached.mcd.svc.cluster.local:11211
             - --secret-key=$(SECRET_KEY)
           ports:
@@ -70,6 +72,16 @@ spec:
               secretKeyRef:
                 name: redis
                 key: host_ro
+          - name: BIDENGINE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: redis
+                key: host_bidengine
+          - name: BIDENGINE_HOST_RO
+            valueFrom:
+              secretKeyRef:
+                name: redis
+                key: host_bidengine_ro
           - name: REDIS_PORT
             valueFrom:
               secretKeyRef:
@@ -88,8 +100,8 @@ spec:
             value: "1"
           resources:
             requests:
-              memory: "500Mi"
+              memory: "700Mi"
               cpu: "500m"
             limits:
-              memory: "500Mi"
+              memory: "700Mi"
       restartPolicy: Always

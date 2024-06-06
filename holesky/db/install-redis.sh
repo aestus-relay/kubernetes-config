@@ -8,8 +8,8 @@ helm repo update
 helm install redis -n redis --create-namespace -f redis-values.yml bitnami/redis
 
 # CLI Access:
-# export REDIS_PASSWORD=$(kubectl get secret --namespace redis redis -o jsonpath="{.data.redis-password}" | base64 -d)
-# kubectl run -n redis redis-client --rm --tty -i --restart='Never' --env REDIS_PASSWORD=$PASSWORD --image docker.io/bitnami/redis:7.2.4-debian-12-r9 -- bash
+# export REDIS_PASSWORD=$(kubectl get secret --namespace redis redis -o jsonpath="{.data.password}" | base64 -d)
+# kubectl run -n redis redis-client --rm --tty -i --restart='Never' --env REDIS_PASSWORD=$REDIS_PASSWORD --image docker.io/bitnami/redis:7.2.4-debian-12-r9 -- bash
 # REDISCLI_AUTH="$REDIS_PASSWORD" redis-cli -h redis-master
 # REDISCLI_AUTH="$REDIS_PASSWORD" redis-cli -h redis-replicas
 

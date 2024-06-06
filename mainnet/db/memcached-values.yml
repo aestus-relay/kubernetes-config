@@ -3,16 +3,16 @@ replicaCount: 2
 
 extraEnvVars:
   - name: MEMCACHED_CACHE_SIZE
-    value: "512"
+    value: "3000"
   - name: MEMCACHED_MAX_ITEM_SIZE
     value: "8388608"
 
 resources:
   requests:
-    memory: 1Gi
-    cpu: "250m"
+    memory: 4Gi
+    cpu: "1000m"
   limits:
-    memory: 1Gi
+    memory: 4Gi
 
 persistence:
   enabled: true
