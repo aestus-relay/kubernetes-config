@@ -17,7 +17,7 @@ spec:
         app: relay-api-proposer
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:9620f49a587393ccb66c5dea625ad438d93a7aadb7a9ba165df3ae1fc065b06c
+        - image: austonst/mev-boost-relay@sha256:f88f6809c868b827c7035eae4ad99da7d0e0d05582fbd450003d0ef82c7e2b4c
           name: api
           args:
             - api
@@ -32,6 +32,7 @@ spec:
             - --bidengine-uri=redis://:$(REDIS_PASSWORD)@$(BIDENGINE_HOST):$(REDIS_PORT)
             - --bidengine-ro-uri=redis://:$(REDIS_PASSWORD)@$(BIDENGINE_HOST_RO):$(REDIS_PORT)
             - --memcached-uris=memcached-0.memcached.mcd.svc.cluster.local:11211,memcached-1.memcached.mcd.svc.cluster.local:11211
+            - --latency-svc-uri=http://int.a.mainnet.aestus.live:3000/ip
             - --secret-key=$(SECRET_KEY)
           ports:
             - containerPort: 9062
@@ -97,6 +98,10 @@ spec:
             value: "0"
           - name: GETPAYLOAD_REQUEST_CUTOFF_MS
             value: "4000"
+          - name: GETHEADER_RESPONSE_RECEIVE_BY_MS
+            value: "800"
+          - name: LATENCY_TIMEOUT_MS
+            value: "25"
           - name: USE_SSZ_ENCODING_PUBLISH_BLOCK
             value: "1"
           resources:

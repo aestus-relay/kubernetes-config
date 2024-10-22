@@ -16,7 +16,7 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:9620f49a587393ccb66c5dea625ad438d93a7aadb7a9ba165df3ae1fc065b06c
+        - image: austonst/mev-boost-relay@sha256:b9438ae1ac267f890141eeffdf45e54dbed91e85f8f688ff402493bf2928f41a
           name: relay-housekeeper
           args:
             - housekeeper
@@ -24,6 +24,10 @@ spec:
             - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
+            - --mev-commit-rpc=wss://chainrpc-wss.testnet.mev-commit.xyz
+            - --ethereum-l1-rpc=http://int.a.holesky.aestus.live:8545
+            - --provider-registry-addr=0xf4F10e18244d836311508917A3B04694D88999Dd
+            - --validator-optin-router-addr=0xCae46e1013D33587180Db5933Abd75D977c2d7ab
           env:
           - name: POSTGRES_USER
             valueFrom:

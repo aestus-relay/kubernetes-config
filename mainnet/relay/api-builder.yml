@@ -99,10 +99,12 @@ spec:
             value: "1"
           - name: ENABLE_BUILDER_CANCELLATIONS
             value: "1"
+          - name: ENABLE_IGNORABLE_VALIDATION_ERRORS
+            value: "1"
           resources:
             requests:
-              memory: "2Gi"
+              memory: "3Gi"
               cpu: "1500m"
             limits:
-              memory: "2Gi"
+              memory: "3Gi"
       restartPolicy: Always
