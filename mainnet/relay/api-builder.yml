@@ -17,7 +17,7 @@ spec:
         app: relay-api-builder
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:9620f49a587393ccb66c5dea625ad438d93a7aadb7a9ba165df3ae1fc065b06c
+        - image: austonst/mev-boost-relay@sha256:5ba9b6ea700926613eab33c4467c3cc132bdb89aff80d7a3224a5e894548d2e5
           name: api
           args:
             - api
@@ -104,7 +104,7 @@ spec:
           resources:
             requests:
               memory: "3Gi"
-              cpu: "1500m"
+              cpu: "7000m"
             limits:
               memory: "3Gi"
       restartPolicy: Always

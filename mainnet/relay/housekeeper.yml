@@ -17,7 +17,7 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:9620f49a587393ccb66c5dea625ad438d93a7aadb7a9ba165df3ae1fc065b06c
+        - image: austonst/mev-boost-relay@sha256:5ba9b6ea700926613eab33c4467c3cc132bdb89aff80d7a3224a5e894548d2e5
           name: relay-housekeeper
           args:
             - housekeeper
@@ -25,6 +25,10 @@ spec:
             - --beacon-uris=http://int.a.mainnet.aestus.live:5052,http://int.b.mainnet.aestus.live:5052,http://int.c.mainnet.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
+            - --mev-commit-rpc=wss://chainrpc-wss.mev-commit.xyz
+            - --ethereum-l1-rpc=http://int.a.mainnet.aestus.live:8545
+            - --provider-registry-addr=0xb772Add4718E5BD6Fe57Fb486A6f7f008E52167E
+            - --validator-optin-router-addr=0x821798d7b9d57dF7Ed7616ef9111A616aB19ed64
           env:
           - name: POSTGRES_USER
             valueFrom:

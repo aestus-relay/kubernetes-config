@@ -1,36 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: relay-api-builder
+  name: relay-api-proposer
   namespace: relay
   labels:
-    app: relay-api-builder
+    app: relay-api-proposer
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
-      app: relay-api-builder
+      app: relay-api-proposer
   template:
     metadata:
       labels:
-        app: relay-api-builder
+        app: relay-api-proposer
     spec:
+      securityContext:
+        runAsNonRoot: false  # Explicitly allow running as root
       containers:
-        - image: austonst/mev-boost-relay@sha256:bf698c6f68d2e13ad2e2cb9f2bfe42dc0c52118c6fe74961ef0ff78acb083c40
-          name: builder
+        - image: austonst/mev-boost-relay@sha256:5ba9b6ea700926613eab33c4467c3cc132bdb89aff80d7a3224a5e894548d2e5
+          name: proposer
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+            # No runAsNonRoot: true here, allowing container to run as root
           args:
             - api
-            - --network=holesky
+            - --network=hoodi
             - --listen-addr=:9062
-            - --apis=builder
-            - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
-            - --blocksim=http://block-queue:8080
+            - --apis=proposer
+            - --beacon-uris=http://int.alpha.hoodi.aestus.live:5052,http://int.beta.hoodi.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
             - --redis-readonly-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST_RO):$(REDIS_PORT)
             - --bidengine-uri=redis://:$(REDIS_PASSWORD)@$(BIDENGINE_HOST):$(REDIS_PORT)
             - --bidengine-ro-uri=redis://:$(REDIS_PASSWORD)@$(BIDENGINE_HOST_RO):$(REDIS_PORT)
             - --memcached-uris=memcached-0.memcached.mcd.svc.cluster.local:11211,memcached-1.memcached.mcd.svc.cluster.local:11211
+            - --latency-svc-uri=http://int.a.holesky.aestus.live:3000/ip
             - --secret-key=$(SECRET_KEY)
           ports:
             - containerPort: 9062
@@ -94,14 +103,16 @@ spec:
                 key: private
           - name: BLOCKSIM_MAX_CONCURRENT
             value: "0"
-          - name: DISABLE_PAYLOAD_DATABASE_STORAGE
-            value: "1"
-          - name: ENABLE_BUILDER_CANCELLATIONS
+          - name: GETPAYLOAD_REQUEST_CUTOFF_MS
+            value: "4000"
+          - name: GETHEADER_RESPONSE_RECEIVE_BY_MS
+            value: "800"
+          - name: USE_SSZ_ENCODING_PUBLISH_BLOCK
             value: "1"
           resources:
-            requests:
-              memory: "900Mi"
-              cpu: "500m"
-            limits:
-              memory: "900Mi"
+            #requests:
+            #  memory: "2Gi"
+            #  cpu: "1000m"
+            #limits:
+            #  memory: "4Gi"
       restartPolicy: Always

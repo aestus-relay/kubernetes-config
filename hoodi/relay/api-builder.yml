@@ -1,36 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: relay-api-proposer
+  name: relay-api-builder
   namespace: relay
   labels:
-    app: relay-api-proposer
+    app: relay-api-builder
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: relay-api-proposer
+      app: relay-api-builder
   template:
     metadata:
       labels:
-        app: relay-api-proposer
+        app: relay-api-builder
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:f88f6809c868b827c7035eae4ad99da7d0e0d05582fbd450003d0ef82c7e2b4c
-          name: proposer
+        - image: austonst/mev-boost-relay@sha256:5ba9b6ea700926613eab33c4467c3cc132bdb89aff80d7a3224a5e894548d2e5
+          name: builder
           args:
             - api
-            - --network=holesky
+            - --network=hoodi
             - --listen-addr=:9062
-            - --apis=proposer
-            - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
+            - --apis=builder
+            - --beacon-uris=http://int.alpha.hoodi.aestus.live:5052,http://int.beta.hoodi.aestus.live:5052
+            - --blocksim=http://block-queue:8080
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
             - --redis-readonly-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST_RO):$(REDIS_PORT)
             - --bidengine-uri=redis://:$(REDIS_PASSWORD)@$(BIDENGINE_HOST):$(REDIS_PORT)
             - --bidengine-ro-uri=redis://:$(REDIS_PASSWORD)@$(BIDENGINE_HOST_RO):$(REDIS_PORT)
             - --memcached-uris=memcached-0.memcached.mcd.svc.cluster.local:11211,memcached-1.memcached.mcd.svc.cluster.local:11211
-            - --latency-svc-uri=http://int.a.holesky.aestus.live:3000/ip
             - --secret-key=$(SECRET_KEY)
           ports:
             - containerPort: 9062
@@ -94,16 +94,14 @@ spec:
                 key: private
           - name: BLOCKSIM_MAX_CONCURRENT
             value: "0"
-          - name: GETPAYLOAD_REQUEST_CUTOFF_MS
-            value: "4000"
-          - name: GETHEADER_RESPONSE_RECEIVE_BY_MS
-            value: "800"
-          - name: USE_SSZ_ENCODING_PUBLISH_BLOCK
+          - name: DISABLE_PAYLOAD_DATABASE_STORAGE
+            value: "1"
+          - name: ENABLE_BUILDER_CANCELLATIONS
             value: "1"
           resources:
-            requests:
-              memory: "7Gi"
-              cpu: "1000m"
+            #requests:
+            #  memory: "900Mi"
+            #  cpu: "500m"
             limits:
-              memory: "7Gi"
+              memory: "900Mi"
       restartPolicy: Always

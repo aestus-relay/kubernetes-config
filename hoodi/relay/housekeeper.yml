@@ -16,16 +16,16 @@ spec:
         app: relay-housekeeper
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:b9438ae1ac267f890141eeffdf45e54dbed91e85f8f688ff402493bf2928f41a
+        - image: austonst/mev-boost-relay@sha256:5ba9b6ea700926613eab33c4467c3cc132bdb89aff80d7a3224a5e894548d2e5
           name: relay-housekeeper
           args:
             - housekeeper
-            - --network=holesky
-            - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
+            - --network=hoodi
+            - --beacon-uris=http://int.alpha.hoodi.aestus.live:5052,http://int.beta.hoodi.aestus.live:5052
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
             - --mev-commit-rpc=wss://chainrpc-wss.testnet.mev-commit.xyz
-            - --ethereum-l1-rpc=http://int.a.holesky.aestus.live:8545
+            - --ethereum-l1-rpc=http://int.alpha.hoodi.aestus.live:8545
             - --provider-registry-addr=0xf4F10e18244d836311508917A3B04694D88999Dd
             - --validator-optin-router-addr=0xCae46e1013D33587180Db5933Abd75D977c2d7ab
           env:
@@ -65,9 +65,9 @@ spec:
                 name: redis
                 key: port
           resources:
-            requests:
-              memory: "1300Mi"
-              cpu: "2000m"
+            #requests:
+            #  memory: "1300Mi"
+            #  cpu: "2000m"
             limits:
               memory: "1300Mi"
       restartPolicy: Always

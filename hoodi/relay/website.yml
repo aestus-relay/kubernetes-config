@@ -1,37 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: relay-api-data
+  name: relay-website
   namespace: relay
   labels:
-    app: relay-api-data
+    app: relay-website
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: relay-api-data
+      app: relay-website
   template:
     metadata:
       labels:
-        app: relay-api-data
+        app: relay-website
     spec:
       containers:
-        - image: austonst/mev-boost-relay@sha256:9620f49a587393ccb66c5dea625ad438d93a7aadb7a9ba165df3ae1fc065b06c
-          name: data
+        - image: austonst/mev-boost-relay@sha256:5ba9b6ea700926613eab33c4467c3cc132bdb89aff80d7a3224a5e894548d2e5
+          name: relay-website
           args:
-            - api
-            - --network=holesky
-            - --listen-addr=:9062
-            - --apis=data
-            - --beacon-uris=http://int.a.holesky.aestus.live:5052,http://int.b.holesky.aestus.live:5052
+            - website
+            - --network=hoodi
+            - --listen-addr=:9060
             - --db=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URI):$(POSTGRES_PORT)/relay-db
             - --redis-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST):$(REDIS_PORT)
             - --redis-readonly-uri=redis://:$(REDIS_PASSWORD)@$(REDIS_HOST_RO):$(REDIS_PORT)
-            - --secret-key=$(SECRET_KEY)
+            - --relay-url=https://0x98f0ef62f00780cf8eb06701a7d22725b9437d4768bb19b363e882ae87129945ec206ec2dc16933f31d983f8225772b6@hoodi.aestus.live
+            - --link-beaconchain=https://hoodi.beaconcha.in
+            - --link-etherscan=https://hoodi.etherscan.io
           ports:
-            - containerPort: 9062
+            - containerPort: 9060
               protocol: TCP
-              name: api
+              name: web
           env:
           - name: POSTGRES_USER
             valueFrom:
@@ -73,15 +73,10 @@ spec:
               secretKeyRef:
                 name: redis
                 key: port
-          - name: SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: relay-key
-                key: private
           resources:
-            requests:
-              memory: "500Mi"
-              cpu: "250m"
+            #requests:
+            #  memory: "1Gi"
+            #  cpu: "500m"
             limits:
-              memory: "500Mi"
+              memory: "1Gi"
       restartPolicy: Always
