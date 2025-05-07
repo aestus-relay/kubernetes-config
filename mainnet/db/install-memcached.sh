@@ -17,5 +17,5 @@ helm install memcached -n mcd --create-namespace -f memcached-values.yml bitnami
 # Note:
 # Without using mcrouter, data is not replicated between nodes
 # Applications must connect to *all* nodes to get all data
-# In case of a crash, data is inaccesible until the node is restarted
+# In case of a crash, data is inaccessible until the node is restarted
 # However, this still provides redundancy in that we're less likely to lost memcached altogether
